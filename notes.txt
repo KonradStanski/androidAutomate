@@ -1,0 +1,18 @@
+
+
+openApp = "adb shell monkey -p com.whatsapp -v 1"
+
+
+setup = "adb push mysendevent /data/local/tmp/"
+
+record = "adb shell getevent -t /dev/input/event1 > recorded_touch_events.txt"
+sendToPhone = "adb push recorded_touch_events.txt /sdcard/"
+
+playback = "adb shell /data/local/tmp/mysendevent /dev/input/event1 /sdcard/recorded_touch_events.txt"
+
+
+
+adb -s emulator-5554 shell input swipe 1040 1422 125 1422
+adb  shell pm list packages
+adb shell getevent -l
+adb -s 0283548d344b7a24 shell sendevent
