@@ -44,18 +44,19 @@ def deviceSelect():
 
 
 def actionSelect():
-	actions = ["listEvents()", "recordEvent()", "playEvent()",
+	actions = ["listEvents()", "recordEvent()", "playEvent()", "listChains()",
 				 "chainEvents()", "playChains()", "listApps()", "launchApp()", "quit()"]
 	clear()
 	printHead()
 	print("[0]: List Events")
 	print("[1]: Record Event")
 	print("[2]: Playback Event")
-	print("[3]: Chain Events")
-	print("[4]: Playback Chains")
-	print("[5]: List Applications")
-	print("[6]: Launch Application")
-	print("[7]: Quit")
+	print("[3]: List Chains")
+	print("[4]: Chain Events")
+	print("[5]: Playback Chain")
+	print("[6]: List Applications")
+	print("[7]: Launch Application")
+	print("[8]: Quit")
 	# take input and validate it
 	actionNum = input("Action #: ")
 	if actionNum == "":
@@ -94,7 +95,7 @@ def listEvents():
 def recordEvent():
 	clear()
 	printHead()
-	fileName = input("Please provide a name to start recording: ")
+	fileName = input("Please provide a filename to start recording: ")
 	print("Press CTRL+C to end recording")
 	# make the events directory if it does not exist
 	if not os.path.exists("events"):
@@ -108,7 +109,27 @@ def recordEvent():
 def playEvent():
 	clear()
 	printHead()
-	print("test")
+	event = input("Please provide a filename to playback: ")
+	print("playing")
+	os.system("adb push ./src/mysendevent /data/local/tmp/")
+	os.system(f"adb push ./events/{event} /sdcard/")
+	os.system(f"adb shell /data/local/tmp/mysendevent /dev/input/event1 /sdcard/{event}")
+	input("[PRESS ENTER]")
+	actionSelect()
+
+
+def listChains():
+	clear()
+	printHead()
+	print("Created Chains: ")
+	if not os.path.exists("chains"):
+		os.makedirs("chains")
+	chains = os.listdir("chains") # fetch the contents of the folder
+	if len(chains) == 0: # if empty
+		print("[EMPTY]")
+	else: # print contents
+		for i in range(len(chains)):
+			print(f"[{i}]: {chains[i]}")
 	input("[PRESS ENTER]")
 	actionSelect()
 
@@ -128,6 +149,7 @@ def playChains():
 	input("[PRESS ENTER]")
 	actionSelect()
 
+
 # Prints a list of all installed apps
 def listApps():
 	clear()
@@ -135,6 +157,7 @@ def listApps():
 	os.system("adb shell pm list packages")
 	input("[PRESS ENTER]")
 	actionSelect()
+
 
 # launches the provided app
 def launchApp():
@@ -156,6 +179,6 @@ def main():
 	actionSelect()
 
 
-
+# play if launched from terminal
 if __name__ == '__main__':
 	main()
