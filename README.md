@@ -10,8 +10,9 @@ This repo provides a command line interface and API for recording and automating
 [4]: Chain Events
 [5]: Playback Chain
 [6]: List Application
-[7]: Launch Application
-[8]: Exit
+[7]: Search Application
+[8]: Launch Application
+[9]: Exit
 
 
 
