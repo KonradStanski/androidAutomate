@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
     char code[32];
     char value[32];
 
+    // this is the bit where the actions are actualy sent
     while (fgets(line, sizeof(line), fd_in) != NULL) {
         // remove the characters [ and ] surrounding the timestamp
         remove_specific_chars(line, '[', ']');

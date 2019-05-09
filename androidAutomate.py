@@ -6,6 +6,7 @@ import time
 global eventId
 eventId = 2
 
+# standard header
 def printHead():
 	print("##################################################")
 	print("#                                                #")
@@ -13,14 +14,19 @@ def printHead():
 	print("#                                                #")
 	print("##################################################")
 
-
+# used to clear the screen
 def clear():
 	os.system("clear -x")
 
-
+# used to quit the terminal app
 def exitMenu():
 	clear()
 	quit()
+
+# used to determine the event number from the command
+# adb shell getevent -lp. Need to identify the touch device
+def detEventId():
+	pass
 
 
 # ACTION DEFINITIONS FOR API ######################################################
@@ -88,10 +94,6 @@ def listEvents():
 			print(f"[{i}]: {events[i]}")
 
 
-
-
-
-
 # MENU CONTROL ################################################################
 def deviceSelect():
 	clear()
@@ -121,8 +123,7 @@ def deviceSelect():
 			clear()
 
 
-def detEventId():
-	pass
+
 
 
 def actionSelect():
