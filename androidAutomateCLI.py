@@ -9,6 +9,29 @@ eventId = 2
 global deviceId
 deviceId = "384852514b573398"
 
+# START device CLASS definition ########################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# END device CLASS definition ##########################################
+
 
 # standard header
 def printHead():
