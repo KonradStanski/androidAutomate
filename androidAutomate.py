@@ -6,6 +6,10 @@ import time
 global eventId
 eventId = 2
 
+global deviceId
+deviceId = "384852514b573398"
+
+
 # standard header
 def printHead():
 	print("##################################################")
@@ -68,6 +72,31 @@ def inputSwipe(x1, y1, x2, y2):
 	os.system(f"adb -s {deviceId} shell input swipe {x1} {y1} {x2} {y2}")
 
 
+def pressHome():
+	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_HOME")
+
+
+def pressBack():
+	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_BACK")
+
+
+def pressPower():
+	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_POWER")
+
+
+def volumeUp():
+	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_VOLUME_UP")
+
+
+def volumeDown():
+	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_VOLUME_DOWN")
+
+
+def keycodeEvent(keycode):
+	os.system(f"adb -s {deviceId} shell input keyevent {keycode}")
+
+
+
 # LIST FUNCTIONS #############################################################
 def listChains():
 	if not os.path.exists("chains"):
@@ -128,8 +157,8 @@ def deviceSelect():
 
 def actionSelect():
 	actions = ["recordEventOp()", "playEventOp()",
-				 "createChainOp()", "playChainOp()", "listAppsOp()", "searchAppOp()",
-				 "launchAppOp()", "exitMenu()"]
+				"createChainOp()", "playChainOp()",
+				"listAppsOp()", "searchAppOp()", "exitMenu()"]
 	clear()
 	printHead()
 	print("[0]: Record Event")
@@ -140,9 +169,8 @@ def actionSelect():
 	print("###########################")
 	print("[4]: List Applications")
 	print("[5]: Search Application")
-	print("[6]: Launch Application")
 	print("###########################")
-	print("[7]: Exit")
+	print("[6]: Exit")
 	# take input and validate it
 	actionNum = input("Action #: ")
 	if actionNum == "":

@@ -1,22 +1,51 @@
-# androidAutomate
-This repo provides a command line interface and API for recording and automating android tasks
+# androidAutomate:
+##Terminal Utility for recording, playing, and chaining together android actions and gestures
 
-# Utility Layout:
-###Main Screen Options
-[0]: List Events
-[1]: Record Events
-[2]: Playback Events
-[3]: List Chains
-[4]: Chain Events
-[5]: Playback Chain
-[6]: List Application
-[7]: Search Application
-[8]: Launch Application
-[9]: Exit
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Quick Setup Guide](#quick-setup-guide)
+- [Api Usage](#api-usage)
 
 
+## Prerequisites
+In order to use this tool you will need:
 
-openApp = "adb shell monkey -p com.whatsapp -v 1"
+- Install ADB on your machine. you can do this by running `sudo apt-get install adb` on debian systems or `sudo dnf install adb` on rpm system. Check if this worked by running: `adb devices`
+- Enable usb debugging on your android phone. This can be acheived on most models by
+
+
+## Quick Setup Guide
+
+### How to Record Events
+
+### How to Playback Events
+
+### How to
+
+## API Usage
+
+
+
+
+```python
+import androidAutomate.py
+```
+
+
+
+### Change Log
+V1.0:
+	Basic funcionality is present
+
+
+
+
+
+
+
+
+
+<!-- openApp = "adb shell monkey -p com.whatsapp -v 1"
 
 
 
@@ -40,3 +69,4 @@ adb shell getevent -t /dev/input/event1 > recorded_touch_events
 adb push mysendevent /data/local/tmp/
 adb push recorded_touch_events /sdcard/
 adb shell /data/local/tmp/mysendevent /dev/input/event1 /sdcard/recorded_touch_events
+ -->
