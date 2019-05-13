@@ -6,17 +6,17 @@ import time
 
 
 """
-This module allows for the automation of
+This module allows for the automation of common android actions
 
 """
 class Device():
 	def __init__(self, deviceId):
 		self.deviceId = deviceId
 		self.eventId = 2#self.detEventId()
+		print(f"EVENTID = {self.eventId}")
 
 	def detEventId(self):
 		pass
-
 
 	def recordEvent(self, event):
 		# make the events directory if it does not exist
@@ -25,12 +25,10 @@ class Device():
 		# get input from device
 		os.system(f"adb -s {self.deviceId} shell getevent -t /dev/input/event{self.eventId} > ./events/{event}")
 
-
 	def playEvent(self, event):
 		os.system(f"adb -s {self.deviceId} push ./src/mysendevent /data/local/tmp/")
 		os.system(f"adb -s {self.deviceId} push ./events/{event} /sdcard/")
 		os.system(f"adb -s {self.deviceId} shell /data/local/tmp/mysendevent /dev/input/event{self.eventId} /sdcard/{event}")
-
 
 	def playChain(self, chain):
 		file = open(f"./chains/{chain}", "r")
@@ -39,42 +37,32 @@ class Device():
 			eval(event)
 		file.close()
 
-
 	def launchApp(self, app):
 		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v 1")
-
 
 	def inputText(self, text):
 		os.system(f"adb -s {self.deviceId} shell input text '{text}'")
 
-
 	def inputTap(self, x, y):
 		os.system(f"adb -s {self.deviceId} shell input tap {x} {y}")
-
 
 	def inputSwipe(self, x1, y1, x2, y2):
 		os.system(f"adb -s {self.deviceId} shell input swipe {x1} {y1} {x2} {y2}")
 
-
 	def pressHome(self):
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_HOME")
-
 
 	def pressBack(self):
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_BACK")
 
-
 	def pressPower(self):
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_POWER")
-
 
 	def volumeUp(self):
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_VOLUME_UP")
 
-
 	def volumeDown(self):
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_VOLUME_DOWN")
-
 
 	def keycodeEvent(self, keycode):
 		os.system(f"adb -s {self.deviceId} shell input keyevent {keycode}")
@@ -92,7 +80,6 @@ class Device():
 			for i in range(len(chains)):
 				print(f"[{i}]: {chains[i]}")
 
-
 	def listEvents(self):
 		# if events folder does not exist, make events folder
 		if not os.path.exists("events"):
@@ -107,7 +94,6 @@ class Device():
 
 	def searchApp(self, search):
 		os.system(f"adb -s {self.deviceId} shell pm list packages | grep {search} -i")
-
 
 	def listApps(self):
 		os.system(f"adb -s {self.deviceId} shell pm list packages")

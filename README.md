@@ -80,10 +80,21 @@ This module provides the option of importing the main androidAutomate.py file to
 This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`
 ```python
 from androidAutomateAPI import Device
+import time
+# Argument is determined from `adb devices` command. In this case it is a Samsung s5
+s5 = Device("97342cf1")
 
-s9 = Device("384852514b573398")
+# Search for the intagram app
+s5.searchApp("insta")
 
-s9.playEvent("test")
+# Using the name found, launch the instagram app
+s5.launchApp("com.instagram.android")
+
+# Wait for app to load
+time.sleep(2)
+
+# swipe to get into the camera
+s5.inputSwipe(0, 1000, 1000, 1000)
 ```
 
 ## API Reference
@@ -95,14 +106,14 @@ s9.playEvent("test")
 ## Debugging FAQ
 
 **1.**
-	A common issue is that the `detEventId` incorrectly identifies some other hardware device on your mobile device as being the touchscreen. If this is the case, you will have to manually check the eventId for touch getures.
+	A common issue is that the `detEventId()` method incorrectly identifies some other hardware device on your mobile device as being the touchscreen. If this is the case, you will have to manually check the eventId for touch getures.
 	run: `adb shell getevent -lp` and find the touchscreen.
 	**ex output to adb shell getevent -lp:**
-```
+```bash
 add device 9: /dev/input/event2 <-- ###THIS IS THE NUMBER YOU WANT###
 	name:     "sec_touchscreen"
 	events:
-		KEY (0001): KEY_HOMEPAGE          BTN_TOOL_FINGER       BTN_TOUCH             01c7		02be
+		KEY (0001): KEY_HOMEPAGE          BTN_TOOL_FINGER       BTN_TOUCH       01c7		02be
 		ABS (0003): ABS_X                 : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
 					ABS_Y                 : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
             		ABS_MT_SLOT           : value 0, min 0, max 9, fuzz 0, flat 0, resolution 0
@@ -114,10 +125,18 @@ add device 9: /dev/input/event2 <-- ###THIS IS THE NUMBER YOU WANT###
 	                003e                  : value 0, min 0, max -1, fuzz 0, flat 0, resolution 0
 	    SW  (0005): 0020*
 ```
-Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it is 2.
+Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it is 2. This can be achieved with: `device.eventId = <deviceId>`
 
 **2.**
-	If your device is not showing up in the `adb devices` command, look here for more info:
+	If your device is **not showing up** in the `adb devices` command, look here for more info:
+	https://stackoverflow.com/questions/21170392/android-device-does-not-show-up-in-adb-list/21470729
+	https://forums.oneplus.com/threads/device-not-listing-using-adb-on-ubuntu-14-04-3.418957/
+	https://stackoverflow.com/questions/32151114/adb-is-not-detecting-my-android-device-on-ubuntu
+
+**3.**
+	If your device shows up as **<deviceId> unauthorized** there are a couple things to check:
+		USB debugging in developer options is checked
+		Try running `adb kill-server` and then `adb start-server` after connecting your device. If you did not get a popup asking you if you trust usb debugging from this computer before, this should do it.
 
 
 
