@@ -23,11 +23,11 @@
 ## Getting Started
 In order to use this tool you will need to:
 
-- Install python 3.7 (Need atleast Python 3.6 for f-strings)
+- Install **python 3.7** (Need atleast Python 3.6 for f-strings)
 
-- Install ADB on your machine.
+- Install **ADB** on your machine.
 	- You can do this by running `sudo apt-get install adb` on debian systems or `sudo dnf install adb` on an rpm system. Check if this worked by running: `adb --version`
-- Enable USB debugging on your android phone.
+- Enable **USB debugging** on your android phone.
 	- This can be acheived on most models by opening the settings menu on your phone, navigating to "about phone" or "system information". Find "Build Number" and tap on it 7-10 times. This will enable developer options. Navigate back to the setting menu, and open the developer options. From here you may enable USB debugging.
 	- Verify this worked correctly by running `adb devices`. You should see your device listed as: `<deviceId> device`
 		- If it does not show anything then most likely have to install your device's USB drivers for linux.
@@ -40,7 +40,7 @@ In order to use this tool you will need to:
 
 ## Quick CLI Use Guide
 - Run androidAutomate.py with `python3 androidAutomate.py`
-- Choose your device
+- Choose your device from the list
 
 #### How to Record Events:
 - Choose Record Event
@@ -76,13 +76,15 @@ In order to use this tool you will need to:
 
 
 ## Writing Scripts
-This utility also provides the option of importing the main androidAutomate.py file to
+This module provides the option of importing the main androidAutomate.py file to programmatically control your automation task.
+This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`
 ```python
-import androidAutomate.py
+from androidAutomateAPI import Device
+
+s9 = Device("384852514b573398")
+
+s9.playEvent("test")
 ```
-
-
-
 
 ## API Reference
 
@@ -92,8 +94,30 @@ import androidAutomate.py
 
 ## Debugging FAQ
 
+**1.**
+	A common issue is that the `detEventId` incorrectly identifies some other hardware device on your mobile device as being the touchscreen. If this is the case, you will have to manually check the eventId for touch getures.
+	run: `adb shell getevent -lp` and find the touchscreen.
+	**ex output to adb shell getevent -lp:**
+```
+add device 9: /dev/input/event2 <-- ###THIS IS THE NUMBER YOU WANT###
+	name:     "sec_touchscreen"
+	events:
+		KEY (0001): KEY_HOMEPAGE          BTN_TOOL_FINGER       BTN_TOUCH             01c7		02be
+		ABS (0003): ABS_X                 : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
+					ABS_Y                 : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
+            		ABS_MT_SLOT           : value 0, min 0, max 9, fuzz 0, flat 0, resolution 0
+	                ABS_MT_TOUCH_MAJOR    : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
+	                ABS_MT_TOUCH_MINOR    : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
+	                ABS_MT_POSITION_X     : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
+	                ABS_MT_POSITION_Y     : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
+	                ABS_MT_TRACKING_ID    : value 0, min 0, max 65535, fuzz 0, flat 0, resolution 0
+	                003e                  : value 0, min 0, max -1, fuzz 0, flat 0, resolution 0
+	    SW  (0005): 0020*
+```
+Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it is 2.
 
-
+**2.**
+	If your device is not showing up in the `adb devices` command, look here for more info:
 
 
 

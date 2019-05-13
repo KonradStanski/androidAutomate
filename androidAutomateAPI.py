@@ -5,10 +5,10 @@ import time
 
 
 
-# CLASS DEFINITION: Device
-#
-#
-#
+"""
+This module allows for the automation of
+
+"""
 class Device():
 	def __init__(self, deviceId):
 		self.deviceId = deviceId
