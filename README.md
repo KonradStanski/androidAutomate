@@ -82,19 +82,21 @@ This is an example script where the deviceId is passed during the instanciation 
 from androidAutomateAPI import Device
 import time
 # Argument is determined from `adb devices` command. In this case it is a Samsung s5
-s5 = Device("97342cf1")
+myDevice = Device("0283548d344b7a24")
 
-# Search for the intagram app
-s5.searchApp("insta")
+# Search for the youtube app
+myDevice.searchApp("youtube")
 
-# Using the name found, launch the instagram app
-s5.launchApp("com.instagram.android")
+# Using the name found, launch the youtube app
+myDevice.launchApp("com.google.android.youtube")
 
 # Wait for app to load
 time.sleep(2)
 
-# swipe to get into the camera
-s5.inputSwipe(0, 1000, 1000, 1000)
+# swipe up a couple times to browse videos
+for i in range(4):
+	myDevice.inputSwipe(500, 1300, 500, 400)
+	time.sleep(0.2)
 ```
 
 ## API Reference
