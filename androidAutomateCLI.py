@@ -9,30 +9,6 @@ eventId = 2
 global deviceId
 deviceId = "384852514b573398"
 
-# START device CLASS definition ########################################
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# END device CLASS definition ##########################################
-
-
 # standard header
 def printHead():
 	print("##################################################")
@@ -144,6 +120,17 @@ def listEvents():
 		print("EVENTS:")
 		for i in range(len(events)):
 			print(f"[{i}]: {events[i]}")
+
+
+def searchApp(search):
+	os.system(f"adb -s {deviceId} shell pm list packages | grep {search} -i")
+
+
+def listApps():
+	os.system(f"adb -s {deviceId} shell pm list packages")
+
+
+
 
 
 # MENU CONTROL ################################################################
@@ -331,9 +318,10 @@ def listAppsOp():
 	clear()
 	printHead()
 	print(f"Listing Apps on {deviceId} ...")
-	os.system(f"adb -s {deviceId} shell pm list packages")
+	listApps()
 	input("[PRESS ENTER]")
 	actionSelect()
+
 
 
 # allows user to search for app
@@ -341,7 +329,7 @@ def searchAppOp():
 	clear()
 	printHead()
 	search = input("Please provide a search criteria: ")
-	os.system(f"adb -s {deviceId} shell pm list packages | grep {search} -i")
+	searchApp(search)
 	input("[PRESS ENTER]")
 	actionSelect()
 
