@@ -161,7 +161,8 @@ def searchApp(search):
 Function that allows you to search your device for an app. Returns the name of the app
 
 Args:
-	search (str): A search criteria that will grep through the output of the command `adb shell pm list packages`
+	search (str): A search criteria that will grep through the output of the command
+	`adb shell pm list packages`
 """
 
 
@@ -238,7 +239,8 @@ Function that presses the volume down button on your device
 
 def keycodeEvent(keycode):
 """
-Function that inputs a keycode to the device. A reference list for keycodes can be found in the /keycodes.txt file
+Function that inputs a keycode to the device. A reference list for keycodes can be
+found in the /keycodes.txt file
 
 Args:
 	keycode (str/int): The string or integer description of the wanted keycode
