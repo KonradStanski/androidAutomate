@@ -99,10 +99,153 @@ for i in range(4):
 	time.sleep(0.2)
 ```
 
+
 ## API Reference
+```python
+class Device():
+"""
+This is the class that allows all the other funcitons to be called.
+
+Args:
+	deviceID (str): The id of the device. Determined using `adb devices`
+"""
 
 
+def listEvents():
+"""
+Function that lists the contents of the /events/ folder
+"""
 
+
+def listChains():
+"""
+Function that lists to stdout the contents of the /chains/ folder
+"""
+
+
+def recordEvent(event):
+"""
+function that records Touchscreen input until CTRL-C is typed into the terminal
+
+Args:
+	event (str): Name of file to which the event will be saved.
+"""
+
+
+def playEvent(event):
+"""
+Function that plays back a recorded event
+
+Args:
+	event (str): Name of the recorded file to play
+"""
+
+
+def playChain(chain):
+"""
+Function that plays a chain of events created in the CLI or manualy by editing a chain file
+
+Args:
+	chain (str): Name of the chain to play
+"""
+
+
+def listApps():
+"""
+Function that will list all of the installed packages on your device
+"""
+
+
+def searchApp(search):
+"""
+Function that allows you to search your device for an app. Returns the name of the app
+
+Args:
+	search (str): A search criteria that will grep through the output of the command `adb shell pm list packages`
+"""
+
+
+def launchApp(app):
+"""
+Function that launches an app
+
+Args:
+	app (str): Launches the supplied app. Apps may be listed in the CLI with listApps()
+"""
+
+
+def inputText(text):
+"""
+Function that inputs text without opening a keyboard on the phone
+
+Args:
+	text (str): Text to input
+"""
+
+
+def inputTap(x, y):
+"""
+Function that inputs a tap at the (x,y) coordinates provided. These can be viewed by turning on
+the taps and swipes option in developer options
+
+Args:
+	x (int): x coordinate
+	y (int): y coordinate
+"""
+
+
+def inputSwipe(x1, y1, x2, y2):
+"""
+Function that inputs a swipe starting at (x1, y1) and going to (x2, y2)
+
+Args:
+	x1 (int): x coordinate of beginning location of swipe
+	y1 (int): y coordinate of beginning location of swipe
+	x2 (int): x coordinate of end location of swipe
+	y2 (int): y coordinate of end location of swipe
+"""
+
+
+def pressHome():
+"""
+Function that pressed the center home button on your device
+"""
+
+
+def pressBack():
+"""
+Function that pressed the back button on your device
+"""
+
+
+def pressPower():
+"""
+Function that presses the power button on your device
+"""
+
+
+def volumeUp():
+"""
+Function that presses the volume up button on your device
+"""
+
+
+def volumeDown():
+"""
+Function that presses the volume down button on your device
+"""
+
+
+def keycodeEvent(keycode):
+"""
+Function that inputs a keycode to the device. A reference list for keycodes can be found in the /keycodes.txt file
+
+Args:
+	keycode (str/int): The string or integer description of the wanted keycode
+"""
+
+
+```
 
 
 ## Debugging FAQ
@@ -143,7 +286,8 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 
 ### TODO
-- proper object oriented class structure for api []
+- proper object oriented class structure for API []
+- convert cli to clas based API
 - a device object that stores information about the connected device []
 - the ability to click relative positions on the screen wrt the size of the screen []
 - automatic event<#> detection []
