@@ -8,16 +8,12 @@
 - Because this utility uses ADB, it is possible to automate AVD, emulator, and real android devices.
 
 
-
-
 ## Table of Contents
 - [Getting Started](#getting-started)
 - [Quick CLI Use Guide](#quick-cli-use-guide)
 - [Writing Scripts](#writing-scripts)
 - [Api Reference](#api-reference)
 - [Debugging FAQ](#debgging-faq)
-
-
 
 
 ## Getting Started
@@ -35,23 +31,23 @@ In order to use this tool you will need to:
 
 - Only tested on linux systems. May not work on Windows as it uses UNIX style OS calls.
 
-
+- Inorder to test if your device is recognized, it is highly recommended that under developer options, the "show touches" and "show swipes" options are enabled
 
 
 ## Quick CLI Use Guide
-- Run androidAutomate.py with `python3 androidAutomate.py`
+- Run androidAutomate.py with `python3 androidAutomateCLI.py`
 - Choose your device from the list
 
 #### How to Record Events:
 - Choose Record Event
-- Provide a name for the event i.e: "send snapchat"
+- Provide a name for the event i.e: "send_snapchat"
 - perform the action on the device
 - Press CTRL-C to stop recording
-- The event is now stored in ./events and can be viewed and edited. To format of storing touch events is up for change
+- The event is now stored in ./events and can be viewed and edited. The format of storing touch events is up for review and may change
 
 #### How to Playback Events:
 - Choose Playback Event
-- provide the name of the event i.e: "send sbnapchat"
+- provide the name of the event i.e: "send_snapchat"
 - make sure the device is in the same state as when you recorded the event
 - The event will now play
 
@@ -70,7 +66,7 @@ In order to use this tool you will need to:
 
 #### Searching for an app:
 - Choose Search Application
-- Provide a search criteria term like you would with grep (it's using grep on the output of the list applications output)
+- Provide a search criteria term like you would with grep (Internaly it is just grep on the output of the list applications output)
 
 
 
@@ -79,6 +75,7 @@ In order to use this tool you will need to:
 This module provides the option of importing the main androidAutomate.py file to programmatically control your automation task.
 This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`
 ```python
+# SAMPLE AUTOMATION SCRIPT
 from androidAutomateAPI import Device
 import time
 # Argument is determined from `adb devices` command. In this case it is a Samsung s5
@@ -94,7 +91,7 @@ myDevice.launchApp("com.google.android.youtube")
 time.sleep(2)
 
 # swipe up a couple times to browse videos
-for i in range(4):
+for i in range(4):     #x1   y1    x2   y2
 	myDevice.inputSwipe(500, 1300, 500, 400)
 	time.sleep(0.2)
 ```
@@ -125,7 +122,7 @@ Function that lists to stdout the contents of the /chains/ folder
 
 def recordEvent(event):
 """
-function that records Touchscreen input until CTRL-C is typed into the terminal
+Function that records Touchscreen input until CTRL-C is typed into the terminal
 
 Args:
 	event (str): Name of file to which the event will be saved.
@@ -288,11 +285,15 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 
 ### TODO
-- proper object oriented class structure for API []
-- convert cli to clas based API
-- a device object that stores information about the connected device []
-- the ability to click relative positions on the screen wrt the size of the screen []
-- automatic event<#> detection []
+1. convert cli to class based API []
+2. add a monkey runner function for random touch input []
+3. the ability to click relative positions on the screen wrt the size of the screen []
+4. automatic event<#> detection []
+5. add screen width dependent input events []
+6. convert openApp to open a fresh copy of the app every time []
+7. record and replay input from all /dev/input/event# numbers and hardware devices []
+8. proper object oriented class structure for API [X]
+
 
 ### CHANGELOG
 V1.0:
@@ -300,9 +301,15 @@ V1.0:
 	can record, replay, chain, and script basic things.
 
 V1.1:
+	Converted to class based structure with python API
 
 
-
+### For other Developers and Contributors:
+This module is essentialy a wrapper around the adb shell providing all the niceties of pythonic automation.
+The replay of events is done by pushing the event record file to the sd card of the phone, then pushing the compiled executable file located in the ./src/ folder to the phone
+The event is then played back from within the phone. This is done as doing the touch playback using python to input adb commands is simply too slow and produces unusable amounts of lag.
+Currently this recording method only records the output from one device, but i believe it is simple enough to convert it to record
+all of the devices of the phone, including the hardware buttons. That is on the todo list.
 
 
 <!-- adb shell wm density gets density

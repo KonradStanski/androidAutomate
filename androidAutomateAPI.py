@@ -198,16 +198,3 @@ Args:
 		Function that will list all of the installed packages on your device
 		"""
 		os.system(f"adb -s {self.deviceId} shell pm list packages")
-
-
-
-
-
-
-
-
-
-
-
-
-
