@@ -243,8 +243,6 @@ found in the /keycodes.txt file
 Args:
 	keycode (str/int): The string or integer description of the wanted keycode
 """
-
-
 ```
 
 
@@ -314,32 +312,4 @@ Currently this recording method only records the output from one device, but i b
 all of the devices of the phone, including the hardware buttons. That is on the todo list.
 
 
-<!-- adb shell wm density gets density
-adb shell wm size gets screen size
- -->
 
-<!-- openApp = "adb shell monkey -p com.whatsapp -v 1"
-
-
-
-record = "adb shell getevent -t /dev/input/event1 > recorded_touch_events.txt"
-
-setup = "adb push mysendevent /data/local/tmp/"
-sendToPhone = "adb push recorded_touch_events.txt /sdcard/"
-playback = "adb shell /data/local/tmp/mysendevent /dev/input/event1 /sdcard/recorded_touch_events.txt"
-
-
-
-adb -s emulator-5554 shell input swipe 1040 1422 125 1422
-adb  shell pm list packages
-adb shell getevent -l
-adb -s 0283548d344b7a24 shell sendevent
-
-
-
-
-adb shell getevent -t /dev/input/event1 > recorded_touch_events
-adb push mysendevent /data/local/tmp/
-adb push recorded_touch_events /sdcard/
-adb shell /data/local/tmp/mysendevent /dev/input/event1 /sdcard/recorded_touch_events
- -->
