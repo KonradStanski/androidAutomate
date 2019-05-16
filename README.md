@@ -31,7 +31,7 @@ In order to use this tool you will need to:
 
 - Only tested on linux systems. May not work on Windows as it uses UNIX style OS calls.
 
-- Inorder to test if your device is recognized, it is highly recommended that under developer options, the "show touches" and "show swipes" options are enabled
+- Inorder to test if your device is recognized, it is highly recommended that under developer options, the "show touches" and "show swipes" options are enabled.
 
 
 ## Quick CLI Use Guide
@@ -72,12 +72,13 @@ In order to use this tool you will need to:
 
 
 ## Writing Scripts
-This module provides the option of importing the main androidAutomate.py file to programmatically control your automation task.
+This module provides the option of importing the main androidAutomateAPI.py file to programmatically control your automation task.
 This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`
 ```python
 # SAMPLE AUTOMATION SCRIPT
 from androidAutomateAPI import Device
 import time
+
 # Argument is determined from `adb devices` command. In this case it is a Samsung s5
 myDevice = Device("0283548d344b7a24")
 
