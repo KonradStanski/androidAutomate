@@ -260,15 +260,15 @@ add device 9: /dev/input/event2 <-- ###THIS IS THE NUMBER YOU WANT###
 	events:
 		KEY (0001): KEY_HOMEPAGE          BTN_TOOL_FINGER       BTN_TOUCH       01c7		02be
 		ABS (0003): ABS_X                 : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
-					ABS_Y                 : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
-            		ABS_MT_SLOT           : value 0, min 0, max 9, fuzz 0, flat 0, resolution 0
-	                ABS_MT_TOUCH_MAJOR    : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
-	                ABS_MT_TOUCH_MINOR    : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
-	                ABS_MT_POSITION_X     : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
-	                ABS_MT_POSITION_Y     : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
-	                ABS_MT_TRACKING_ID    : value 0, min 0, max 65535, fuzz 0, flat 0, resolution 0
-	                003e                  : value 0, min 0, max -1, fuzz 0, flat 0, resolution 0
-	    SW  (0005): 0020*
+			ABS_Y                 : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
+			ABS_MT_SLOT           : value 0, min 0, max 9, fuzz 0, flat 0, resolution 0
+			ABS_MT_TOUCH_MAJOR    : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
+			ABS_MT_TOUCH_MINOR    : value 0, min 0, max 255, fuzz 0, flat 0, resolution 0
+			ABS_MT_POSITION_X     : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
+			ABS_MT_POSITION_Y     : value 0, min 0, max 4095, fuzz 0, flat 0, resolution 0
+			ABS_MT_TRACKING_ID    : value 0, min 0, max 65535, fuzz 0, flat 0, resolution 0
+			003e                  : value 0, min 0, max -1, fuzz 0, flat 0, resolution 0
+		SW  (0005): 0020*
 ```
 Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it is 2. This can be achieved with: `device.eventId = <deviceId>`
 
@@ -294,6 +294,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 6. convert openApp to open a fresh copy of the app every time []
 7. record and replay input from all /dev/input/event# numbers and hardware devices []
 8. proper object oriented class structure for API [X]
+9. add availability to go to sepcific tasks within an app []
 
 
 ### CHANGELOG
