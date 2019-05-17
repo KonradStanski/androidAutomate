@@ -270,15 +270,14 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 
 ### TODO
-1. convert cli to class based API []
+1. convert cli to class based API [X]
 2. add a monkey runner function for random touch input []
-3. the ability to click relative positions on the screen wrt the size of the screen []
-4. automatic event<#> detection []
-5. add screen width dependent input events []
-6. convert openApp to open a fresh copy of the app every time []
-7. record and replay input from all /dev/input/event# numbers and hardware devices []
-8. proper object oriented class structure for API [X]
-9. add availability to go to sepcific tasks within an app []
+3. automatic event<#> detection []
+4. add screen width dependent input events []
+5. convert openApp to open a fresh copy of the app every time [X]
+6. record and replay input from all /dev/input/event# numbers and hardware devices []
+7. proper object oriented class structure for API [X]
+8. add availability to go to sepcific tasks within an app []
 
 
 ### CHANGELOG
@@ -288,6 +287,8 @@ V1.0:
 
 V1.1:
 	Converted to class based structure with python API
+	Converted CLI to API
+	Removed chains because they are redundant with scripts
 
 
 ### For other Developers and Contributors:
