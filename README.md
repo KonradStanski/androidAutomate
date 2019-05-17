@@ -3,7 +3,6 @@
 - Android Automate is a root-less android automation tool.
 - Allows for touch recording and playback.
 - Provides an easy to use python object oriented API for injecting ADB commands to your android devices.
-- Allows for chaining common tasks together in the CLI interface.
 - Can be used for automating Unit and Regression testing.
 - Because this utility uses ADB, it is possible to automate AVD, emulator, and real android devices.
 
@@ -50,19 +49,6 @@ In order to use this tool you will need to:
 - provide the name of the event i.e: "send_snapchat"
 - make sure the device is in the same state as when you recorded the event
 - The event will now play
-
-#### How to create Chains:
-- Choose Create Chain
-- Provide a name for the chain
-- Choose which action you would like to start and follow the instructions
-- Make sure to choose the exit option when you are done
-- You can go into ./chains and edit the chains manualy if you wish.
-
-#### How to play Chains:
-- Choose Playback Chain
-- Type the name of the chain you would like to play
-- Make sure the device is in the same state as what is expected from the first event in the Chain
-- The chain will now play
 
 #### Searching for an app:
 - Choose Search Application
