@@ -1,7 +1,11 @@
 from androidAutomateAPI import Device
 import time
+
 # Argument is determined from `adb devices` command. In this case it is a Samsung s5
 myDevice = Device("0283548d344b7a24")
+
+# Wake Phone screen
+myDevice.wakeup()
 
 # Search for the youtube app
 myDevice.searchApp("youtube")

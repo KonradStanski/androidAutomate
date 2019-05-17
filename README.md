@@ -92,9 +92,9 @@ myDevice.launchApp("com.google.android.youtube")
 time.sleep(2)
 
 # swipe up a couple times to browse videos
-for i in range(4):     #x1   y1    x2   y2
-	myDevice.inputSwipe(500, 1300, 500, 400)
-	time.sleep(0.2)
+for i in range(4):      #x1   y1    x2   y2
+    myDevice.inputSwipe(500, 1300, 500, 400)
+    time.sleep(0.2)
 ```
 
 
