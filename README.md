@@ -1,4 +1,4 @@
-# androidAutomate:
+# Android Automate:
 ## What Is It?
 - Android Automate is a root-less android automation tool.
 - Allows for touch recording and playback.
