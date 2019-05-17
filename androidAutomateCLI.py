@@ -2,19 +2,32 @@
 from subprocess import Popen, PIPE
 import os
 import time
+import math
 from androidAutomateAPI import Device
 
+
+## Will be redundant after detEventId() method is implemented ###
 global eventId
 eventId = 2
+#################################################################
+
 
 # standard header
 def printHead():
-	print("##################################################")
-	print("#                                                #")
-	print("#             androidAutomate V 1.0              #")
-	print("#                                                #")
-	print("##################################################")
-
+	# print("##################################################")
+	# print("#                                                #")
+	# print("#             androidAutomate V 1.1              #")
+	# print("#                                                #")
+	# print("##################################################")
+	width = int(os.popen('stty size', 'r').read().split()[1])
+	line = "#"*int(width)
+	space = "#" + " "*(width-2) + "#"
+	name = "#" + " "*math.floor(((width - 22)/2)) + "androidAutomate V 1.1" + " "*math.floor(((width - 22)/2)) + "#"
+	print(  f"{line}\n"
+			f"{space}\n"
+			f"{name}\n"
+			f"{space}\n"
+			f"{line}")
 
 # used to clear the screen
 def clear():
@@ -57,17 +70,20 @@ def deviceSelect():
 
 
 def actionSelect():
+	# These are the available menu options
 	actions = ["recordEventOp()", "playEventOp()",
 				"listAppsOp()", "searchAppOp()", "exitMenu()"]
 	clear()
 	printHead()
-	print("[0]: Record Event")
-	print("[1]: Playback Event")
-	print("###########################")
-	print("[2]: List Applications")
-	print("[3]: Search Application")
-	print("###########################")
-	print("[4]: Exit")
+	# get width of screen for dividing line
+	width = int(os.popen('stty size', 'r').read().split()[1])
+	line = "#"*width
+	print(  f"[0]: Record Event\n"
+			f"[1]: Playback Event\n"
+			f"[2]: List Applications\n"
+			f"[3]: Search Application\n"
+			f"[4]: Exit\n"
+			f"{line}")
 	# take input and validate it
 	actionNum = input("Action #: ")
 	if actionNum == "":

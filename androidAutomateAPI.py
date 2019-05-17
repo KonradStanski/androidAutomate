@@ -17,43 +17,13 @@ class Device():
 		self.eventId = 2#self.detEventId()
 		print(f"EVENTID = {self.eventId}")
 
-
 	def detEventId(self):
+		#"""
+		# Function that self determines the eventId of the touch screen of the device.
+		#
 		pass
 
-
-	def recordEvent(self, event):
-		# """
-		# function that records Touchscreen input until CTRL-C is typed into the terminal
-		# Args:
-		# 	event (str): Name of file to which the event will be saved.
-		# """
-		if not os.path.exists("events"): # make the events directory if it does not exist
-			os.makedirs("events")
-		os.system(f"adb -s {self.deviceId} shell getevent -t /dev/input/event{self.eventId} > ./events/{event}") # get input from device
-
-
-	def playEvent(self, event):
-		# """
-		# Function that plays back a recorded event
-		# Args:
-		# 	event (str): Name of the recorded file to play
-		# """
-		os.system(f"adb -s {self.deviceId} push ./src/mysendevent /data/local/tmp/")
-		os.system(f"adb -s {self.deviceId} push ./events/{event} /sdcard/")
-		os.system(f"adb -s {self.deviceId} shell /data/local/tmp/mysendevent /dev/input/event{self.eventId} /sdcard/{event}")
-
-
-	def launchApp(self, app):
-		# """
-		# Function that launches an app
-		# Args:
-		# 	app (str): Launches the supplied app. Apps may be listed in the CLI with listApps()
-		# """
-		os.system(f"adb -s {self.deviceId} shell am force-stop {app}")
-		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v 1")
-
-
+	# INPUT METHODS ###################################################################################################
 	def inputText(self, text):
 		# """
 		# Function that inputs text without opening a keyboard on the phone
@@ -61,7 +31,6 @@ class Device():
 		# 	text (str): Text to input
 		# """
 		os.system(f"adb -s {self.deviceId} shell input text '{text}'")
-
 
 	def inputTap(self, x, y):
 		# """
@@ -72,7 +41,6 @@ class Device():
 		# 	y (int): y coordinate
 		# """
 		os.system(f"adb -s {self.deviceId} shell input tap {x} {y}")
-
 
 	def inputSwipe(self, x1, y1, x2, y2):
 		# """
@@ -85,13 +53,11 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell input swipe {x1} {y1} {x2} {y2}")
 
-
 	def pressHome(self):
 		# """
 		# Function that pressed the center home button on your device
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_HOME")
-
 
 	def pressBack(self):
 		# """
@@ -99,13 +65,11 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_BACK")
 
-
 	def pressPower(self):
 		# """
 		# Function that presses the power button on your device
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_POWER")
-
 
 	def wakeup(self):
 		# """
@@ -113,20 +77,17 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_WAKEUP")
 
-
 	def volumeUp(self):
 		# """
 		# Function that presses the volume up button on your device
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_VOLUME_UP")
 
-
 	def volumeDown(self):
 		# """
 		# Function that presses the volume down button on your device
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_VOLUME_DOWN")
-
 
 	def keycodeEvent(self, keycode):
 		# """
@@ -137,7 +98,36 @@ class Device():
 		os.system(f"adb -s {self.deviceId} shell input keyevent {keycode}")
 
 
-	# Auxilliary Functions
+	# AUXILLIARY METHODS ############################################################################################
+	def recordEvent(self, event):
+		# """
+		# function that records Touchscreen input until CTRL-C is typed into the terminal
+		# Args:
+		# 	event (str): Name of file to which the event will be saved.
+		# """
+		if not os.path.exists("events"): # make the events directory if it does not exist
+			os.makedirs("events")
+		os.system(f"adb -s {self.deviceId} shell getevent -t /dev/input/event{self.eventId} > ./events/{event}") # get input from device
+
+	def playEvent(self, event):
+		# """
+		# Function that plays back a recorded event
+		# Args:
+		# 	event (str): Name of the recorded file to play
+		# """
+		os.system(f"adb -s {self.deviceId} push ./src/mysendevent /data/local/tmp/")
+		os.system(f"adb -s {self.deviceId} push ./events/{event} /sdcard/")
+		os.system(f"adb -s {self.deviceId} shell /data/local/tmp/mysendevent /dev/input/event{self.eventId} /sdcard/{event}")
+
+	def launchApp(self, app):
+		# """
+		# Function that launches an app
+		# Args:
+		# 	app (str): Launches the supplied app. Apps may be listed in the CLI with listApps()
+		# """
+		os.system(f"adb -s {self.deviceId} shell am force-stop {app}")
+		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v 1")
+
 	def listEvents(self):
 		# """
 		# Function that lists the contents of the /events/ folder
@@ -153,7 +143,6 @@ class Device():
 			for i in range(len(events)):
 				print(f"[{i}]: {events[i]}")
 
-
 	def searchApp(self, search):
 		# """
 		# Function that allows you to search your device for an app. Returns the name of the app
@@ -162,9 +151,17 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell pm list packages | grep {search} -i")
 
-
 	def listApps(self):
 		# """
 		# Function that will list all of the installed packages on your device
 		# """
 		os.system(f"adb -s {self.deviceId} shell pm list packages")
+
+	def inputRandom(self, app, numEvents):
+		# """
+		# Function which uses the monkey runner module to open an app and input random events
+		# Args:
+		#	app (str): which app to launch for random input
+		#	numEvents (int): number of random inputs to inject
+		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v {numEvents}")
+
