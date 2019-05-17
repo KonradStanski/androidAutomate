@@ -2,12 +2,10 @@
 from subprocess import Popen, PIPE
 import os
 import time
+from androidAutomateAPI import Device
 
 global eventId
 eventId = 2
-
-global deviceId
-deviceId = "384852514b573398"
 
 # standard header
 def printHead():
@@ -17,6 +15,7 @@ def printHead():
 	print("#                                                #")
 	print("##################################################")
 
+
 # used to clear the screen
 def clear():
 	os.system("clear -x")
@@ -25,112 +24,6 @@ def clear():
 def exitMenu():
 	clear()
 	quit()
-
-# used to determine the event number from the command
-# adb shell getevent -lp. Need to identify the touch device
-def detEventId():
-	pass
-
-
-# ACTION DEFINITIONS FOR API ######################################################
-def recordEvent(event):
-	# make the events directory if it does not exist
-	if not os.path.exists("events"):
-		os.makedirs("events")
-	# get input from device
-	os.system(f"adb -s {deviceId} shell getevent -t /dev/input/event{eventId} > ./events/{event}")
-
-
-def playEvent(event):
-	os.system(f"adb -s {deviceId} push ./src/mysendevent /data/local/tmp/")
-	os.system(f"adb -s {deviceId} push ./events/{event} /sdcard/")
-	os.system(f"adb -s {deviceId} shell /data/local/tmp/mysendevent /dev/input/event{eventId} /sdcard/{event}")
-
-
-def playChain(chain):
-	file = open(f"./chains/{chain}", "r")
-	for event in file:
-		print(f"### CURRENTLY DOING ###: {event}")
-		eval(event)
-	file.close()
-
-
-def launchApp(app):
-	os.system(f"adb -s {deviceId} shell monkey -p {app} -v 1")
-
-
-def inputText(text):
-	os.system(f"adb -s {deviceId} shell input text '{text}'")
-
-
-def inputTap(x, y):
-	os.system(f"adb -s {deviceId} shell input tap {x} {y}")
-
-
-def inputSwipe(x1, y1, x2, y2):
-	os.system(f"adb -s {deviceId} shell input swipe {x1} {y1} {x2} {y2}")
-
-
-def pressHome():
-	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_HOME")
-
-
-def pressBack():
-	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_BACK")
-
-
-def pressPower():
-	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_POWER")
-
-
-def volumeUp():
-	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_VOLUME_UP")
-
-
-def volumeDown():
-	os.system(f"adb -s {deviceId} shell input keyevent KEYCODE_VOLUME_DOWN")
-
-
-def keycodeEvent(keycode):
-	os.system(f"adb -s {deviceId} shell input keyevent {keycode}")
-
-
-
-# LIST FUNCTIONS #############################################################
-def listChains():
-	if not os.path.exists("chains"):
-		os.makedirs("chains")
-	chains = os.listdir("chains") # fetch the contents of the folder
-	if len(chains) == 0: # if empty
-		print("[EMPTY]")
-	else: # print contents
-		print("CHAINS:")
-		for i in range(len(chains)):
-			print(f"[{i}]: {chains[i]}")
-
-
-def listEvents():
-	# if events folder does not exist, make events folder
-	if not os.path.exists("events"):
-		os.makedirs("events")
-	events = os.listdir("events") # fetch the contents of the folder
-	if len(events) == 0: # if empty
-		print("[EMPTY]")
-	else: # print contents
-		print("EVENTS:")
-		for i in range(len(events)):
-			print(f"[{i}]: {events[i]}")
-
-
-def searchApp(search):
-	os.system(f"adb -s {deviceId} shell pm list packages | grep {search} -i")
-
-
-def listApps():
-	os.system(f"adb -s {deviceId} shell pm list packages")
-
-
-
 
 
 # MENU CONTROL ################################################################
@@ -157,30 +50,24 @@ def deviceSelect():
 			deviceSelect()
 		else:
 			deviceNum = int(deviceNum)
-			global deviceId
+			# global deviceId
 			deviceId = lines[deviceNum + 1].split("\t")[0] # get ID
 			clear()
-
-
-
+			return deviceId
 
 
 def actionSelect():
 	actions = ["recordEventOp()", "playEventOp()",
-				"createChainOp()", "playChainOp()",
 				"listAppsOp()", "searchAppOp()", "exitMenu()"]
 	clear()
 	printHead()
 	print("[0]: Record Event")
 	print("[1]: Playback Event")
 	print("###########################")
-	print("[2]: Chain Events")
-	print("[3]: Playback Chain")
+	print("[2]: List Applications")
+	print("[3]: Search Application")
 	print("###########################")
-	print("[4]: List Applications")
-	print("[5]: Search Application")
-	print("###########################")
-	print("[6]: Exit")
+	print("[4]: Exit")
 	# take input and validate it
 	actionNum = input("Action #: ")
 	if actionNum == "":
@@ -204,151 +91,55 @@ def recordEventOp():
 	printHead()
 	event = input("Please provide a filename to start recording: ")
 	print("Press CTRL+C to end recording")
-	recordEvent(event)
+	myDevice.recordEvent(event)
 	input("[PRESS ENTER]")
 	actionSelect()
-
 
 # plays a recorded event
 def playEventOp():
 	clear()
 	printHead()
-	listEvents()
+	myDevice.listEvents()
 	event = input("Filename of event to play: ")
-	print(f"playing {event} to {deviceId}")
-	playEvent(event)
+	print(f"playing {event} to {myDevice.deviceId}")
+	myDevice.playEvent(event)
 	input("[PRESS ENTER]")
 	actionSelect()
-
-
-
-# create a chain
-def createChainOp():
-	clear()
-	printHead()
-
-	chain = input("Please provide filename for a new chain: ")
-	if not os.path.exists("chains"):
-		os.makedirs("chains")
-	file = open(f"./chains/{chain}", "w+")
-
-	writeFlag = True
-	while writeFlag:
-		clear()
-		printHead()
-		print("[0]: Add event")
-		print("[1]: Add chain")
-		print("[2]: Add delay")
-		print("[3]: Add launch app")
-		print("[4]: Add input text")
-		print("[5]: Add tap")
-		print("[6]: Add swipe")
-		print("[7]: Finish")
-
-		# take input and validate it
-		actionNum = input("Action #: ")
-		if actionNum == "":
-			createChainOp()
-		elif not actionNum.isdigit():
-			input("[PLEASE INPUT VALID ENTRY]")
-			createChainOp()
-		elif int(actionNum) > 7:
-			input("[PLEASE INPUT VALID ENTRY]")
-			createChainOp()
-		else:
-			# If valid, call the function at the corresponding index
-			actionNum = int(actionNum)
-			if actionNum == 0: # event
-				clear()
-				printHead()
-				listEvents()
-				event = input("Please provide the filename of the event: ")
-				file.write(f"playEvent('{event}')\n")
-			if actionNum == 1: # chain
-				clear()
-				printHead()
-				listChains()
-				chain = input("Please provide the filename of the chain: ")
-				file.write(f"playchain('{chain}')\n")
-			if actionNum == 2: # delay
-				clear()
-				printHead()
-				delay = input("Time (s) to delay: ")
-				file.write(f"time.sleep({delay})\n")
-			if actionNum == 3: # launch app
-				clear()
-				printHead()
-				app = input("App to launch: ")
-				file.write(f"launchApp('{app}')\n")
-			if actionNum == 4: # input text
-				clear()
-				printHead()
-				text = input("Text to input: ")
-				file.write(f"inputText('{text}')\n")
-			if actionNum == 5: # input tap
-				clear()
-				printHead()
-				x, y = input("space seperated x y: ").split(" ")
-				file.write(f"inputTap({x}, {y})\n")
-			if actionNum == 6: # input swipe
-				clear()
-				printHead()
-				x1, y1, x2, y2 = input("Space seperated x1 y1 x2 y2: ").split(" ")
-				file.write(f"inputSwipe({x1}, {y1}, {x2}, {y2})\n")
-			if actionNum == 7: # finish
-				writeFlag = False
-				file.close()
-	actionSelect()
-
-
-# play a chain
-def playChainOp():
-	clear()
-	printHead()
-	listChains()
-	chain = input("Filename of chain to play: ")
-	print(f"Playing {chain} to {deviceId}")
-	playChain(chain)
-	input("[PRESS ENTER]")
-	actionSelect()
-
 
 # Prints a list of all installed apps
 def listAppsOp():
 	clear()
 	printHead()
-	print(f"Listing Apps on {deviceId} ...")
-	listApps()
+	print(f"Listing Apps on {myDevice.deviceId} ...")
+	myDevice.listApps()
 	input("[PRESS ENTER]")
 	actionSelect()
-
-
 
 # allows user to search for app
 def searchAppOp():
 	clear()
 	printHead()
 	search = input("Please provide a search criteria: ")
-	searchApp(search)
+	myDevice.searchApp(search)
 	input("[PRESS ENTER]")
 	actionSelect()
-
 
 # launches the provided app
 def launchAppOp():
 	clear()
 	printHead()
 	app = input("Please type full app name <ex: com.whatsapp>: ")
-	launchApp(app)
+	myDevice.launchApp(app)
 	input("[PRESS ENTER]")
 	actionSelect()
 
 
 # MAIN FUNCTION ####################################################################
 def main():
-	# os.system("sudo dnf install adb")
 	clear()
-	deviceSelect()
+	deviceId = deviceSelect()
+	global myDevice
+	myDevice = Device(deviceId)
 	actionSelect()
 
 

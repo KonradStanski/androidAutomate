@@ -44,19 +44,6 @@ class Device():
 		os.system(f"adb -s {self.deviceId} shell /data/local/tmp/mysendevent /dev/input/event{self.eventId} /sdcard/{event}")
 
 
-	def playChain(self, chain):
-		# """
-		# Function that plays a chain of events created in the CLI or manualy by editing a chain file
-		# Args:
-		# 	chain (str): Name of the chain to play
-		# """
-		file = open(f"./chains/{chain}", "r")
-		for event in file:
-			print(f"### CURRENTLY DOING ###: {event}")
-			eval(event)
-		file.close()
-
-
 	def launchApp(self, app):
 		# """
 		# Function that launches an app
@@ -151,21 +138,6 @@ class Device():
 
 
 	# Auxilliary Functions
-	def listChains(self):
-		# """
-		# Function that lists to stdout the contents of the /chains/ folder
-		# """
-		if not os.path.exists("chains"):
-			os.makedirs("chains")
-		chains = os.listdir("chains") # fetch the contents of the folder
-		if len(chains) == 0: # if empty
-			print("[EMPTY]")
-		else: # print contents
-			print("CHAINS:")
-			for i in range(len(chains)):
-				print(f"[{i}]: {chains[i]}")
-
-
 	def listEvents(self):
 		# """
 		# Function that lists the contents of the /events/ folder
