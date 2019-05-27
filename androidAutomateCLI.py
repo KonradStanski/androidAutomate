@@ -23,11 +23,11 @@ def printHead():
 	line = "#"*int(width)
 	space = "#" + " "*(width-2) + "#"
 	name = "#" + " "*math.floor(((width - 22)/2)) + "androidAutomate V 1.1" + " "*math.floor(((width - 22)/2)) + "#"
-	print(  f"{line}\n"
-			f"{space}\n"
-			f"{name}\n"
-			f"{space}\n"
-			f"{line}")
+	print(f"{line}\n"
+		f"{space}\n"
+		f"{name}\n"
+		f"{space}\n"
+		f"{line}")
 
 # used to clear the screen
 def clear():
@@ -77,13 +77,13 @@ def actionSelect():
 	printHead()
 	# get width of screen for dividing line
 	width = int(os.popen('stty size', 'r').read().split()[1])
-	line = "#"*width
-	print(  f"[0]: Record Event\n"
-			f"[1]: Playback Event\n"
-			f"[2]: List Applications\n"
-			f"[3]: Search Application\n"
-			f"[4]: Exit\n"
-			f"{line}")
+	line = "="*width
+	print(f"[0]: Record Event\n"
+		f"[1]: Playback Event\n"
+		f"[2]: List Applications\n"
+		f"[3]: Search Application\n"
+		f"[4]: Exit\n"
+		f"{line}")
 	# take input and validate it
 	actionNum = input("Action #: ")
 	if actionNum == "":
