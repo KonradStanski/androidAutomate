@@ -82,6 +82,12 @@ time.sleep(2)
 for i in range(4):      #x1   y1    x2   y2
     myDevice.inputSwipe(500, 1300, 500, 400) #This represents a swipe up
     time.sleep(0.2)
+
+# Demonstrate input options
+myDevice.inputSwipe(500, 800, 500, 400) #This represents a swipe up
+myDevice.inputSwipe(500, 800, 500, 400, 1000) #This represents a swipe up but slow
+myDevice.inputSwipe(50, 80, 50, 20, percent=True) #This represents a swipe up but with the x and y inputs being a percentage
+
 ```
 
 ## API Reference
@@ -97,23 +103,16 @@ class Device():
 
 #### Input Methods:
 ```python
-def inputText(text):
-# """
-# Function that inputs text without opening a keyboard on the phone
-# Args:
-# 	text (str): Text to input
-# """
-
-
 def inputTap(x, y):
 # """
-# Function that inputs a tap at the (x,y) coordinates provided. These can be viewed by turning on
-# the taps and swipes option in developer options
+# Function that inputs a tap at the (x,y) coordinates provided.
+# These can be viewed by turning on the taps and swipes option in developer options
 # Args:
 # 	x (int): x coordinate
 # 	y (int): y coordinate
+# Optional Args:
+# 	percent="True" (False by default): Sets the x,y input mode to percent of screen size
 # """
-
 
 def inputSwipe(x1, y1, x2, y2):
 # """
@@ -123,8 +122,17 @@ def inputSwipe(x1, y1, x2, y2):
 # 	y1 (int): y coordinate of beginning location of swipe
 # 	x2 (int): x coordinate of end location of swipe
 # 	y2 (int): y coordinate of end location of swipe
+# Optional Args:
+# 	time (int): the time (ms) to perform swipe. Default: 200ms
+# 	percent="True" (False by default): Sets the x, y input mode to percent of screen size
 # """
 
+def inputText(text):
+# """
+# Function that inputs text without opening a keyboard on the phone
+# Args:
+# 	text (str): Text to input
+# """
 
 def pressHome():
 # """
@@ -221,10 +229,20 @@ def inputRandom(app, numEvents):
 # """
 
 def detEventId():
-#"""
+# """
 # Function that self determines the eventId of the touch screen of the device.
 # IMPORTANT NOTE: eventId is determined by the first device that has the name "touch" in it.
 # It can be set manualy with myDevice.eventId = <eventId>
+# returns:
+# 	eventId (str): the number corresponding to the touch screen eventId
+# """
+
+def screenSize(self):
+#"""
+# Function that self determines the screen size of the device.
+# returns:
+# 	width (str): the width of the device in pixels
+# 	height (str): the height of the device in pixels
 #"""
 ```
 
@@ -267,10 +285,10 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 
 ### TODO
-1. add screen width dependent input events []
-2. record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
-3. add availability to go to sepcific tasks within an app []
-4. create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
+1. record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
+2. add availability to go to sepcific tasks within an app []
+3. create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
+4. add robust error catching and error messages []
 
 ### DONE
 1. convert cli to class based API [X]
@@ -278,6 +296,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 3. automatic event<#> detection [X]
 4. convert openApp to open a fresh copy of the app every time [X]
 5. proper object oriented class structure for API [X]
+6. add screen width dependent input events [X]
 
 
 ### CHANGELOG

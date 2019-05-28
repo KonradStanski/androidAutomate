@@ -16,33 +16,33 @@ class Device():
 	def __init__(self, deviceId):
 		self.deviceId = deviceId
 		self.eventId = self.detEventId()
+		self.screenWidth, self.screenHeight = self.screenSize()
 		print(f"DEVICEID: {self.deviceId}")
 		print(f"EVENTID: {self.eventId}")
-
-
-
+		print(f"SCREEN WIDTH: {self.screenWidth}")
+		print(f"SCREEN HEIGHT: {self.screenHeight}\n")
 
 
 	# INPUT METHODS ###################################################################################################
-	def inputText(self, text):
-		# """
-		# Function that inputs text without opening a keyboard on the phone
-		# Args:
-		# 	text (str): Text to input
-		# """
-		os.system(f"adb -s {self.deviceId} shell input text '{text}'")
-
-	def inputTap(self, x, y):
+	def inputTap(self, x, y, percent=False):
 		# """
 		# Function that inputs a tap at the (x,y) coordinates provided.
 		# These can be viewed by turning on the taps and swipes option in developer options
 		# Args:
 		# 	x (int): x coordinate
 		# 	y (int): y coordinate
+		# Optional Args:
+		# 	percent="True" (False by default): Sets the x,y input mode to percent of screen size
 		# """
-		os.system(f"adb -s {self.deviceId} shell input tap {x} {y}")
+		if percent:
+			x = (x/100)*self.screenWidth
+			y = (y/100)*self.screenHeight
+			os.system(f"adb -s {self.deviceId} shell input tap {x} {y}")
+		else:
+			print("percent off")
+			os.system(f"adb -s {self.deviceId} shell input tap {x} {y}")
 
-	def inputSwipe(self, x1, y1, x2, y2):
+	def inputSwipe(self, x1, y1, x2, y2, time=200, percent=False):
 		# """
 		# Function that inputs a swipe starting at (x1, y1) and going to (x2, y2)
 		# Args:
@@ -50,8 +50,26 @@ class Device():
 		# 	y1 (int): y coordinate of beginning location of swipe
 		# 	x2 (int): x coordinate of end location of swipe
 		# 	y2 (int): y coordinate of end location of swipe
+		# Optional Args:
+		# 	time (int): the time (ms) to perform swipe. Default: 200ms
+		# 	percent="True" (False by default): Sets the x, y input mode to percent of screen size
 		# """
-		os.system(f"adb -s {self.deviceId} shell input swipe {x1} {y1} {x2} {y2}")
+		if percent:
+			x1 = (x1/100)*self.screenWidth
+			y1 = (y1/100)*self.screenHeight
+			x2 = (x2/100)*self.screenWidth
+			y2 = (y2/100)*self.screenHeight
+			os.system(f"adb -s {self.deviceId} shell input swipe {x1} {y1} {x2} {y2} {time}")
+		else:
+			os.system(f"adb -s {self.deviceId} shell input swipe {x1} {y1} {x2} {y2} {time}")
+
+	def inputText(self, text):
+		# """
+		# Function that inputs text without opening a keyboard on the phone
+		# Args:
+		# 	text (str): Text to input
+		# """
+		os.system(f"adb -s {self.deviceId} shell input text '{text}'")
 
 	def pressHome(self):
 		# """
@@ -98,7 +116,7 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent {keycode}")
 
-	def inputRandom(self, app, numEvents)
+	def inputRandom(self, app, numEvents):
 		# """
 		# Function which uses the monkey runner module to open an app and input random events
 		# Args:
@@ -168,20 +186,14 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell pm list packages")
 
-	def inputRandom(self, app, numEvents):
-		# """
-		# Function which uses the monkey runner module to open an app and input random events
-		# Args:
-		#	app (str): which app to launch for random input
-		#	numEvents (int): number of random inputs to inject
-		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v {numEvents}")
-
 	def detEventId(self):
-		#"""
+		# """
 		# Function that self determines the eventId of the touch screen of the device.
 		# IMPORTANT NOTE: eventId is determined by the first device that has the name "touch" in it.
 		# It can be set manualy with myDevice.eventId = <eventId>
-		#"""
+		# returns:
+		# 	eventId (str): the number corresponding to the touch screen eventId
+		# """
 		# Get output of adb shell getevent -lp command for parsing
 		process = Popen(['adb','-s', self.deviceId,'shell', 'getevent', '-lp'], stdout=PIPE, stderr=PIPE)
 		stdout, stderr = process.communicate()
@@ -192,5 +204,21 @@ class Device():
 				eventId = re.findall('(\d+)$', line)[0] # regex for getting the number at th end
 			if line[0:7] == "  name:":
 				if re.search("touch", line, re.IGNORECASE):
-					print(f"Found eventId: {eventId}")
+					print(f"Found eventId: '{eventId}' in: '{line}'")
 					return eventId
+
+	def screenSize(self):
+		#"""
+		# Function that self determines the screen size of the device.
+		# returns:
+		# 	width (int): the width of the device in pixels
+		# 	height (int): the height of the device in pixels
+		#"""
+		# Get output for parsing
+		process = Popen(['adb','-s', self.deviceId,'shell', 'wm', 'size'], stdout=PIPE, stderr=PIPE)
+		stdout, stderr = process.communicate()
+		lines = stdout.decode().splitlines()
+		# Determine size
+		for line in lines:
+			width, height = (line.split(" ")[2]).split("x")
+		return int(width), int(height)
