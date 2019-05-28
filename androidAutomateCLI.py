@@ -9,9 +9,10 @@ from androidAutomateAPI import Device
 ## Will be redundant after detEventId() method is implemented ###
 global eventId
 eventId = 2
-#################################################################
 
 
+
+# BASIC FUNCTIONS ################################################################
 # standard header
 def printHead():
 	# print("##################################################")
@@ -153,10 +154,10 @@ def launchAppOp():
 # MAIN FUNCTION ####################################################################
 def main():
 	clear()
-	deviceId = deviceSelect()
+	deviceId = deviceSelect() # get the user to select a device
 	global myDevice
-	myDevice = Device(deviceId)
-	actionSelect()
+	myDevice = Device(deviceId) # instanciate device
+	actionSelect() # go to main menu
 
 
 # play if launched from terminal

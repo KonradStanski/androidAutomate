@@ -60,6 +60,7 @@ In order to use this tool you will need to:
 ## Writing Scripts
 This module provides the option of importing the main androidAutomateAPI.py file to programmatically control your automation task.
 This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`
+The eventId is a parameter that identifies the touchscreen hardware id. It is determined automatically by the funciton detEventId(). This function can fail under certain circumstances in which case you will need to run the command `adb shell getevent -lp` and find the eventId. This can then be used to overwrite the incorrect eventId determined in the instanciation of the device.
 ```python
 # SAMPLE AUTOMATION SCRIPT
 from androidAutomateAPI import Device
@@ -217,6 +218,14 @@ def inputRandom(app, numEvents):
 # Args:
 #	app (str): which app to launch for random input
 #	numEvents (int): number of random inputs to inject
+# """
+
+def detEventId():
+#"""
+# Function that self determines the eventId of the touch screen of the device.
+# IMPORTANT NOTE: eventId is determined by the first device that has the name "touch" in it.
+# It can be set manualy with myDevice.eventId = <eventId>
+#"""
 ```
 
 
@@ -258,14 +267,17 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 
 ### TODO
+1. add screen width dependent input events []
+2. record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
+3. add availability to go to sepcific tasks within an app []
+4. create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
+
+### DONE
 1. convert cli to class based API [X]
-2. add a monkey runner function for random touch input []
-3. automatic event<#> detection []
-4. add screen width dependent input events []
-5. convert openApp to open a fresh copy of the app every time [X]
-6. record and replay input from all /dev/input/event# numbers and hardware devices []
-7. proper object oriented class structure for API [X]
-8. add availability to go to sepcific tasks within an app []
+2. add a monkey runner function for random touch input [X]
+3. automatic event<#> detection [X]
+4. convert openApp to open a fresh copy of the app every time [X]
+5. proper object oriented class structure for API [X]
 
 
 ### CHANGELOG
