@@ -1,7 +1,7 @@
 # Android Automate:
 ## What Is It?
 - Android Automate is a root-less android automation tool.
-- Allows for touch recording and playback.
+- Allows for multi-touch recording and playback with accurate time replication.
 - Provides an easy to use python object oriented API for injecting ADB commands to your android devices.
 - Can be used for automating Unit and Regression testing.
 - Because this utility uses ADB, it is possible to automate AVD, emulator, and real android devices.
@@ -33,9 +33,11 @@ In order to use this tool you will need to:
 - Inorder to test if your device is recognized, it is highly recommended that under developer options, the "show touches" and "show swipes" options are enabled.
 
 
-## Quick CLI Use Guide
-- Run androidAutomate.py with `python3 androidAutomateCLI.py`
+## Quick Use Guide
+- The idea is that you can use the CLI tool to explore what is possible, and then you can script things as can be seen in the example below.
+- Run androidAutomateCLI.py with `python3 androidAutomateCLI.py`
 - Choose your device from the list
+- From here record touch events, play touch events, explore and search installed apps, aswell as discovered the names of clickable nodes.
 
 #### How to Record Events:
 - Choose "Record Event"
@@ -314,6 +316,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 - add availability to go to sepcific tasks within an app []
 - create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
 - add robust error catching and error messages []
+- make all cli inputs numbered []
 
 ### DONE
 - convert cli to class based API [X]
