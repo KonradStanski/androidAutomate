@@ -38,23 +38,28 @@ In order to use this tool you will need to:
 - Choose your device from the list
 
 #### How to Record Events:
-- Choose Record Event
+- Choose "Record Event"
 - Provide a name for the event i.e: "send_snapchat"
 - perform the action on the device
 - Press CTRL-C to stop recording
 - The event is now stored in ./events and can be viewed and edited. The format of storing touch events is up for review and may change
 
 #### How to Playback Events:
-- Choose Playback Event
+- Choose "Playback Event"
 - provide the name of the event i.e: "send_snapchat"
 - make sure the device is in the same state as when you recorded the event
 - The event will now play
 
 #### Searching for an app:
-- Choose Search Application
+- Choose "Search Application"
 - Provide a search criteria term like you would with grep (Internaly it is just grep on the output of the list applications output)
 
-
+#### List Clickable Nodes
+- Choose "list Clickable Nodes"
+- The info for all of the currently clickable nodes will be displayed.
+- The "content-desc" string will be used for matching nodes to click on in the tapNode() function
+- if the node you would like to click is not listed, you can look in the generated screendump.xml file to look for issues
+- NOTE: parseScreenXML() matches only nodes that have the atribute clickable="true"
 
 
 ## Writing Scripts
@@ -69,26 +74,29 @@ import time
 # Argument is determined from `adb devices` command. In this case it is a Samsung s5
 myDevice = Device("0283548d344b7a24")
 
-# Search for the youtube app
-myDevice.searchApp("youtube")
+# Use the CLI to determine package names for launching
+myDevice.launchApp("com.android.settings")
 
-# Using the name found, launch the youtube app
-myDevice.launchApp("com.google.android.youtube")
-
-# Wait for app to load
+# Wait for app to load / **REPLACE WITH FUNCTION TO DETECT WHEN APP LOADS** /
 time.sleep(2)
 
-# swipe up a couple times to browse videos
+# Tap on the searchbar (the possible tappable things are found in the CLI option "list Clickable Nodes")
+myDevice.tapNode("Search")
+
+# input text to the search bar:
+myDevice.inputText("TEST")
+
+# swipe up a couple times
 for i in range(4):      #x1   y1    x2   y2
     myDevice.inputSwipe(500, 1300, 500, 400) #This represents a swipe up
     time.sleep(0.2)
 
-# Demonstrate input options
-myDevice.inputSwipe(500, 800, 500, 400) #This represents a swipe up
+# Demonstrate swipe options
 myDevice.inputSwipe(500, 800, 500, 400, 1000) #This represents a swipe up but slow
 myDevice.inputSwipe(50, 80, 50, 20, percent=True) #This represents a swipe up but with the x and y inputs being a percentage
 
 ```
+
 
 ## API Reference
 #### Device Class:
@@ -103,7 +111,7 @@ class Device():
 
 #### Input Methods:
 ```python
-def inputTap(x, y):
+def inputTap(x, y, (optional) percent=True):
 # """
 # Function that inputs a tap at the (x,y) coordinates provided.
 # These can be viewed by turning on the taps and swipes option in developer options
@@ -114,7 +122,7 @@ def inputTap(x, y):
 # 	percent="True" (False by default): Sets the x,y input mode to percent of screen size
 # """
 
-def inputSwipe(x1, y1, x2, y2):
+def inputSwipe(x1, y1, x2, y2, (optional) time, percent=True):
 # """
 # Function that inputs a swipe starting at (x1, y1) and going to (x2, y2)
 # Args:
@@ -237,13 +245,18 @@ def detEventId():
 # 	eventId (str): the number corresponding to the touch screen eventId
 # """
 
-def screenSize(self):
+def screenSize():
 #"""
 # Function that self determines the screen size of the device.
-# returns:
+# Returns:
 # 	width (str): the width of the device in pixels
 # 	height (str): the height of the device in pixels
 #"""
+
+def parseScreenXML():
+# """
+# Function to parse the current view for clickable nodes
+# """
 ```
 
 
@@ -285,18 +298,21 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 
 ### TODO
-1. record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
-2. add availability to go to sepcific tasks within an app []
-3. create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
-4. add robust error catching and error messages []
+- add "waitOnApp()" functionality to wait for the activity to have the appname in it []
+- add ability to click on specific id events []
+- update CLI to have "list clickable nodes of current activity" []
+- record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
+- add availability to go to sepcific tasks within an app []
+- create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
+- add robust error catching and error messages []
 
 ### DONE
-1. convert cli to class based API [X]
-2. add a monkey runner function for random touch input [X]
-3. automatic event<#> detection [X]
-4. convert openApp to open a fresh copy of the app every time [X]
-5. proper object oriented class structure for API [X]
-6. add screen width dependent input events [X]
+- convert cli to class based API [X]
+- add a monkey runner function for random touch input [X]
+- automatic event<#> detection [X]
+- convert openApp to open a fresh copy of the app every time [X]
+- proper object oriented class structure for API [X]
+- add screen width dependent input events [X]
 
 
 ### CHANGELOG

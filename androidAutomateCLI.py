@@ -73,7 +73,7 @@ def deviceSelect():
 def actionSelect():
 	# These are the available menu options
 	actions = ["recordEventOp()", "playEventOp()",
-				"listAppsOp()", "searchAppOp()", "exitMenu()"]
+				"listAppsOp()", "searchAppOp()", "displayNodesOp()", "exitMenu()"]
 	clear()
 	printHead()
 	# get width of screen for dividing line
@@ -83,7 +83,8 @@ def actionSelect():
 		f"[1]: Playback Event\n"
 		f"[2]: List Applications\n"
 		f"[3]: Search Application\n"
-		f"[4]: Exit\n"
+		f"[4]: List Clickable Nodes\n"
+		f"[5]: Exit\n"
 		f"{line}")
 	# take input and validate it
 	actionNum = input("Action #: ")
@@ -150,6 +151,23 @@ def launchAppOp():
 	input("[PRESS ENTER]")
 	actionSelect()
 
+def displayNodesOp():
+	clear()
+	printHead()
+	print("Please wait...")
+	nodes = myDevice.parseScreenXML()
+	for item in nodes:
+		print(f"Text:         {item.text_content}")
+		print(f"Content-desc: {item.content_desc}")
+		print(f"Resource-id:  {item.resource_id}")
+		print(f"Class:        {item.class_id}")
+		print(f"Package_id:   {item.package_id}")
+		print(f"Bounds:       {item.bounds}")
+		print(f"Center x,y:   {item.center}")
+		width = int(os.popen('stty size', 'r').read().split()[1])
+		print("="*width)
+	input("[PRESS ENTER]")
+	actionSelect()
 
 # MAIN FUNCTION ####################################################################
 def main():
@@ -163,3 +181,4 @@ def main():
 # play if launched from terminal
 if __name__ == '__main__':
 	main()
+

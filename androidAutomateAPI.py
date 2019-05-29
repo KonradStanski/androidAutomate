@@ -3,7 +3,7 @@ from subprocess import Popen, PIPE
 import os
 import time
 import re
-
+import math
 
 
 
@@ -222,3 +222,60 @@ class Device():
 		for line in lines:
 			width, height = (line.split(" ")[2]).split("x")
 		return int(width), int(height)
+
+	def parseScreenXML(self):
+		# """
+		# Function to parse the current view for clickable nodes
+		# Returns:
+		# 	nodes (list of node objects): a list of node objects for further processing
+		# """
+		# Get screen dump to file
+		os.system(f"adb -s {self.deviceId} pull $(adb -s {self.deviceId} shell uiautomator dump | grep -oP '[^ ]+.xml') ./screendump.xml")
+		# Process xml and output it to file for viewing pleasure
+		file = open("screendump.xml", "r+")
+		dumpfile = file.read()
+		dump = dumpfile
+		dumpfile = dumpfile.replace("><", ">\n<")
+		file.close()
+		file = open("screendump.xml", "w+")
+		file.write(dumpfile)
+		file.close()
+		# determine clickable nodes
+		remove = []
+		dump  = dump.split("><")
+		# remove invalid nodes
+		for i in range(len(dump)):
+			if 'index' not in dump[i]:
+				dump[i] = ""
+			if ('text=""' in dump[i]) and ('content-desc=""' in dump[i]):
+				dump[i] = ""
+		# Process the xml to identify clickable nodes
+		dump = list(filter(None, dump))
+		class node():
+			def __init__(self, text):
+				self.text_content = re.findall(r'text="(.*?)"', text)[0]
+				self.resource_id = re.findall(r'resource-id="(.*?)"', text)[0]
+				self.class_id = re.findall(r'class="(.*?)"', text)[0]
+				self.package_id = re.findall(r'package="(.*?)"', text)[0]
+				self.content_desc = re.findall(r'content-desc="(.*?)"', text)[0]
+				self.bounds = re.findall(r'bounds="(.*?)"', text)[0]
+				self.bounds = [int(x) for x in re.findall(r'[\d]+',self.bounds)]
+				self.center = [math.floor(self.bounds[0]+((self.bounds[2]-self.bounds[0])/2)), math.floor(self.bounds[1]+((self.bounds[3]-self.bounds[1])/2))]
+		# Create List of node objects
+		nodes = []
+		for text in dump:
+			nodes.append(node(text))
+		return nodes # return nodes if required for further processing
+
+	def tapNode(self, node_name):
+		# """
+		# Function that inputs a tap on the item described by its content-desc
+		# Args:
+		# 	node_name (str): the content-desc of the node or the text.
+		nodes = self.parseScreenXML()
+		for item in nodes:
+			if (node_name == item.content_desc) or (node_name == item.text_content):
+				self.inputTap(item.center[0], item.center[1])
+				break
+
+
