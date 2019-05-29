@@ -267,14 +267,14 @@ class Device():
 			nodes.append(node(text))
 		return nodes # return nodes if required for further processing
 
-	def tapNode(self, node_name):
+	def tapNode(self, nodeName):
 		# """
 		# Function that inputs a tap on the item described by its content-desc
 		# Args:
-		# 	node_name (str): the content-desc of the node or the text.
+		# 	nodeName (str): the content-desc of the node or the text
 		nodes = self.parseScreenXML()
 		for item in nodes:
-			if (node_name == item.content_desc) or (node_name == item.text_content):
+			if (nodeName == item.content_desc) or (nodeName == item.text_content):
 				self.inputTap(item.center[0], item.center[1])
 				break
 

@@ -256,7 +256,15 @@ def screenSize():
 def parseScreenXML():
 # """
 # Function to parse the current view for clickable nodes
+# Returns:
+# 	nodes (list of node objects): a list of node objects for further processing
 # """
+
+def tapNode(nodeName):
+# """
+# Function that inputs a tap on the item described by its content-desc
+# Args:
+# 	nodeName (str): the content-desc of the node or the text
 ```
 
 
