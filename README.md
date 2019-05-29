@@ -265,6 +265,7 @@ def tapNode(nodeName):
 # Function that inputs a tap on the item described by its content-desc
 # Args:
 # 	nodeName (str): the content-desc of the node or the text
+# """
 ```
 
 
