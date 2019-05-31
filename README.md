@@ -161,6 +161,17 @@ def pressPower():
 # Function that presses the power button on your device
 # """
 
+def wakeup(self):
+	# """
+	# Function that wake's your device if it is not already awake
+	# """
+
+
+def sleep(self):
+# """
+# Function that puts your device to sleep if it is awake
+# """
+
 
 def volumeUp():
 # """
@@ -229,6 +240,15 @@ def launchApp(app):
 # Args:
 # 	app (str): Launches the supplied app. Apps may be listed in the CLI with listApps()
 # """
+
+
+def closeApp(self, app):
+# """
+# Function that closes an app
+# Args:
+# 	app (str): Closes the supplied app. Apps may be listed in the CLI with listApps()
+# """
+
 
 def inputRandom(app, numEvents):
 # """

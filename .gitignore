@@ -1,4 +1,5 @@
 __pycache__/
+scripts/
 __init__.py
 sample.py
 screendump.xml

@@ -39,7 +39,6 @@ class Device():
 			y = (y/100)*self.screenHeight
 			os.system(f"adb -s {self.deviceId} shell input tap {x} {y}")
 		else:
-			print("percent off")
 			os.system(f"adb -s {self.deviceId} shell input tap {x} {y}")
 
 	def inputSwipe(self, x1, y1, x2, y2, time=200, percent=False):
@@ -91,9 +90,15 @@ class Device():
 
 	def wakeup(self):
 		# """
-		# Function that presses the power button on your device
+		# Function that wake's your device if it is not already awake
 		# """
 		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_WAKEUP")
+
+	def sleep(self):
+		# """
+		# Function that puts your device to sleep if it is awake
+		# """
+		os.system(f"adb -s {self.deviceId} shell input keyevent KEYCODE_SLEEP")
 
 	def volumeUp(self):
 		# """
@@ -156,6 +161,21 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell am force-stop {app}")
 		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v 1")
+		# wait for app to open
+		line = [""]
+		while app not in line[0]:
+			process = Popen(['adb','-s', self.deviceId,'shell', ' dumpsys', 'window', 'windows', '|', 'grep', '-E', '"mFocusedApp"'], stdout=PIPE, stderr=PIPE)
+			stdout, stderr = process.communicate()
+			line = stdout.decode().splitlines()
+		time.sleep(1) #wait for the intended view to show up
+
+	def closeApp(self, app):
+		# """
+		# Function that closes an app
+		# Args:
+		# 	app (str): Closes the supplied app. Apps may be listed in the CLI with listApps()
+		# """
+		os.system(f"adb -s {self.deviceId} shell am force-stop {app}")
 
 	def listEvents(self):
 		# """
