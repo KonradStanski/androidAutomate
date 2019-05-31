@@ -149,9 +149,9 @@ class Device():
 		# Args:
 		# 	event (str): Name of the recorded file to play
 		# """
-		os.system(f"adb -s {self.deviceId} push ./src/mysendevent /data/local/tmp/")
+		os.system(f"adb -s {self.deviceId} push ./src/mysendevent_arm /data/local/tmp/")
 		os.system(f"adb -s {self.deviceId} push ./events/{event} /sdcard/")
-		os.system(f"adb -s {self.deviceId} shell /data/local/tmp/mysendevent /dev/input/event{self.eventId} /sdcard/{event}")
+		os.system(f"adb -s {self.deviceId} shell /data/local/tmp/mysendevent_arm /dev/input/event{self.eventId} /sdcard/{event}")
 
 	def launchApp(self, app):
 		# """
@@ -162,12 +162,12 @@ class Device():
 		os.system(f"adb -s {self.deviceId} shell am force-stop {app}")
 		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v 1")
 		# wait for app to open
-		line = [""]
-		while app not in line[0]:
-			process = Popen(['adb','-s', self.deviceId,'shell', ' dumpsys', 'window', 'windows', '|', 'grep', '-E', '"mFocusedApp"'], stdout=PIPE, stderr=PIPE)
-			stdout, stderr = process.communicate()
-			line = stdout.decode().splitlines()
-		time.sleep(1) #wait for the intended view to show up
+		# line = [""]
+		# while app not in line[0]:
+		# 	process = Popen(['adb','-s', self.deviceId,'shell', ' dumpsys', 'window', 'windows', '|', 'grep', '-E', '"mFocusedApp"'], stdout=PIPE, stderr=PIPE)
+		# 	stdout, stderr = process.communicate()
+		# 	line = stdout.decode().splitlines()
+		# time.sleep(1) #wait for the intended view to show up
 
 	def closeApp(self, app):
 		# """
@@ -191,6 +191,7 @@ class Device():
 			print("EVENTS:")
 			for i in range(len(events)):
 				print(f"[{i}]: {events[i]}")
+			return events
 
 	def searchApp(self, search):
 		# """
@@ -223,9 +224,11 @@ class Device():
 			if line[0:10] == "add device": # Match add device lines
 				eventId = re.findall('(\d+)$', line)[0] # regex for getting the number at th end
 			if line[0:7] == "  name:":
-				if re.search("touch", line, re.IGNORECASE):
+				if re.search("touch", line, re.IGNORECASE) or re.search("qwerty", line, re.IGNORECASE):
 					print(f"Found eventId: '{eventId}' in: '{line}'")
 					return eventId
+		# Nothing was found
+		return "###EventId-not-found###"
 
 	def screenSize(self):
 		#"""

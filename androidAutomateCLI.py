@@ -117,8 +117,9 @@ def recordEventOp():
 def playEventOp():
 	clear()
 	printHead()
-	myDevice.listEvents()
-	event = input("Filename of event to play: ")
+	events = myDevice.listEvents()
+	eventNum = int(input("Number of event to play: "))
+	event = events[eventNum]
 	print(f"playing {event} to {myDevice.deviceId}")
 	myDevice.playEvent(event)
 	input("[PRESS ENTER]")

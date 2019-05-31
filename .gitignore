@@ -1,5 +1,5 @@
 __pycache__/
 scripts/
-__init__.py
+events/
 sample.py
 screendump.xml
