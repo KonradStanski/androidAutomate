@@ -12,15 +12,17 @@ class Device():
 # This is the class that allows all the other funcitons to be called.
 # Args:
 # 	deviceID (str): The id of the device. Determined using `adb devices`
+# 	suppressPrint (bool): False by default, decides if instanciation info is printed
 # """
-	def __init__(self, deviceId):
+	def __init__(self, deviceId, suppressPrint=False):
 		self.deviceId = deviceId
 		self.eventId = self.detEventId()
 		self.screenWidth, self.screenHeight = self.screenSize()
-		print(f"DEVICEID: {self.deviceId}")
-		print(f"EVENTID: {self.eventId}")
-		print(f"SCREEN WIDTH: {self.screenWidth}")
-		print(f"SCREEN HEIGHT: {self.screenHeight}\n")
+		if not suppressPrint:
+			print(f"DEVICEID: {self.deviceId}")
+			print(f"EVENTID: {self.eventId}")
+			print(f"SCREEN WIDTH: {self.screenWidth}")
+			print(f"SCREEN HEIGHT: {self.screenHeight}\n")
 
 
 	# INPUT METHODS ###################################################################################################

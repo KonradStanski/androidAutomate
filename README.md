@@ -35,19 +35,19 @@ In order to use this tool you will need to:
 
 ## Quick Use Guide
 - The idea is that you can use the CLI tool to explore what is possible, and then you can script things as can be seen in the example below.
-- Run androidAutomateCLI.py with `python3 androidAutomateCLI.py`
+- Run androidAutomateCLI.py with `python3 androidAutomateCLI.py` in the project root directory
 - Choose your device from the list
 - From here record touch events, play touch events, explore and search installed apps, aswell as discovered the names of clickable nodes.
 
 #### How to Record Events:
-- Choose "Record Event"
+- Choose "Record Event" in the CLI menu
 - Provide a name for the event i.e: "send_snapchat"
 - Perform the action on the device
 - Press CTRL-C to stop recording
 - The event is now stored in ./events and can be viewed and edited. The format of storing touch events is up for review and may change
 
 #### How to Playback Events:
-- Choose "Playback Event"
+- Choose "Playback Event" in the CLI menu
 - The available events will be listed with numbers
 - Provide the number of the event
 - Make sure the device is in the same state as when you recorded the event
@@ -58,11 +58,15 @@ In order to use this tool you will need to:
 - Provide a search criteria term like you would with grep (Internaly it is just grep on the output of the list applications output)
 
 #### List Clickable Nodes
-- Choose "list Clickable Nodes"
+- Choose "List Clickable Nodes" in the CLI menu
 - The info for all of the currently clickable nodes will be displayed.
 - The "content-desc" string will be used for matching nodes to click on in the tapNode() function
 - If the node you would like to click is not listed, you can look in the generated screendump.xml file to look for issues
 - NOTE: parseScreenXML() matches only nodes that have the atribute clickable="true"
+
+#### Tap Clickable Node
+- Choose "Tap Clickable Node" in the CLI menu
+- Provide a keyword of sub-string (case-insensitive) of "Text" or "Content-desc" from the output of the "List Clickable Nodes" output. This will tap the first node matching such criteria
 
 
 ## Writing Scripts
@@ -101,8 +105,7 @@ myDevice.inputSwipe(50, 80, 50, 20, percent=True) #This represents a swipe up bu
 
 
 ## API Reference
-The [API reference](https://github.com/KonradStanski/androidAutomate/wiki/1.-API-Reference) and [Source Code](https://github.com/KonradStanski/androidAutomate/wiki/3.-API-Source-Code) can be found on the GitHub Wiki!
-
+### The [API reference](https://github.com/KonradStanski/androidAutomate/wiki/1.-API-Reference) and [Source Code](https://github.com/KonradStanski/androidAutomate/wiki/3.-API-Source-Code) can be found on the GitHub Wiki!
 
 
 ## Debugging FAQ
@@ -127,7 +130,7 @@ add device 9: /dev/input/event2 <-- ###THIS IS THE NUMBER YOU WANT###
 			003e                  : value 0, min 0, max -1, fuzz 0, flat 0, resolution 0
 		SW  (0005): 0020*
 ```
-Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it is 2. This can be achieved with: `device.eventId = <deviceId>`
+Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it is 2. This can be achieved with: `myDevice.eventId = <deviceId>`
 
 **2.**
 	If your device is **not showing up** in the `adb devices` command, look here for more info:
@@ -152,7 +155,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 - add availability to go to sepcific tasks within an app []
 - create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
 - add robust error catching and error messages []
-- make all cli inputs numbered []
+- add clicking x'th matching node to the tapNode() funciton []
 
 ### DONE
 - update CLI to have "list clickable nodes of current activity" [X]
@@ -162,6 +165,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 - convert openApp to open a fresh copy of the app every time [X]
 - proper object oriented class structure for API [X]
 - add screen width dependent input events [X]
+- make all cli inputs numbered [X]
 
 
 ### CHANGELOG
@@ -181,6 +185,7 @@ V1.1:
 
 ### For other Developers and Contributors:
 **Please do not hesitate to contact me or raise issues! I am always glad to help**
+
 This module is essentialy a wrapper around the adb shell providing all the niceties of pythonic automation.
 The replay of events is done by pushing the event record file to the sd card of the phone, then pushing the compiled executable file located in the ./src/ folder to the phone
 The event is then played back from within the phone. This is done as doing the touch playback using python to input adb commands is simply too slow and produces unusable amounts of lag.

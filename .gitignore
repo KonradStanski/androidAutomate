@@ -1,9 +1,11 @@
 __pycache__/
-scripts/
+scripts/*
 events/*
-screendump.xml
 
+# ignore the screen dump from node tapping
+/*.xml
 
+# Ignore all test scripts
 /*.py
 !androidAutomate.py
 !androidAutomateCLI.py

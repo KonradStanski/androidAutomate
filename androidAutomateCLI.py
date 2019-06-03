@@ -5,15 +5,8 @@ import time
 import math
 from androidAutomate import Device
 
-
-## Will be redundant after detEventId() method is implemented ###
-global eventId
-# eventId = 2
-
-
-
 # BASIC FUNCTIONS ################################################################
-# standard header
+# standard header for AndroidAutomate
 def printHead():
 	# print("##################################################")
 	# print("#                                                #")
@@ -39,6 +32,12 @@ def exitMenu():
 	clear()
 	quit()
 
+# Print a line of charater the width of the screen
+def printLine(character):
+	width = int(os.popen('stty size', 'r').read().split()[1])
+	line = character*width
+	print(line)
+
 
 # MENU CONTROL ################################################################
 def deviceSelect():
@@ -53,6 +52,7 @@ def deviceSelect():
 	else:
 		for i in range(1, len(lines)-1): # print devices
 			print(f"[{i-1}]: {lines[i]}")
+		printLine("=")
 		deviceNum = input("Device #: ") # get user input for selection
 		if deviceNum == "":
 			deviceSelect()
@@ -69,24 +69,23 @@ def deviceSelect():
 			clear()
 			return deviceId
 
-
 def actionSelect():
 	# These are the available menu options
-	actions = ["recordEventOp()", "playEventOp()",
-				"listAppsOp()", "searchAppOp()", "displayNodesOp()", "tapNodeOp()", "exitMenu()"]
+	actions = ["recordEventOp()", "playEventOp()", "listAppsOp()",
+	"searchAppOp()", "displayNodesOp()", "tapNodeOp()", "exitMenu()"]
 	clear()
 	printHead()
 	# get width of screen for dividing line
-	width = int(os.popen('stty size', 'r').read().split()[1])
-	line = "="*width
+	# width = int(os.popen('stty size', 'r').read().split()[1])
+	# line = "="*width
 	print(f"[0]: Record Event\n"
 		f"[1]: Playback Event\n"
 		f"[2]: List Applications\n"
 		f"[3]: Search Application\n"
 		f"[4]: List Clickable Nodes\n"
 		f"[5]: Tap Clickable Nodes\n"
-		f"[6]: Exit\n"
-		f"{line}")
+		f"[6]: Exit")
+	printLine("=")
 	# take input and validate it
 	actionNum = input("Action #: ")
 	if actionNum == "":
@@ -159,6 +158,7 @@ def displayNodesOp():
 	printHead()
 	print("Please wait...")
 	nodes = myDevice.parseScreenXML()
+	printLine("=")
 	for item in nodes:
 		print(f"Text:         {item.text_content}")
 		print(f"Content-desc: {item.content_desc}")
@@ -167,8 +167,7 @@ def displayNodesOp():
 		print(f"Package_id:   {item.package_id}")
 		print(f"Bounds:       {item.bounds}")
 		print(f"Center x,y:   {item.center}")
-		width = int(os.popen('stty size', 'r').read().split()[1])
-		print("="*width)
+		printLine("=")
 	input("[PRESS ENTER]")
 	actionSelect()
 
@@ -187,7 +186,7 @@ def main():
 	clear()
 	deviceId = deviceSelect() # get the user to select a device
 	global myDevice
-	myDevice = Device(deviceId) # instanciate device
+	myDevice = Device(deviceId, suppressPrint=True) # instanciate device
 	actionSelect() # go to main menu
 
 
