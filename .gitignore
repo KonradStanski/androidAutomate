@@ -1,5 +1,9 @@
 __pycache__/
 scripts/
 events/*
-sample.py
 screendump.xml
+
+
+/*.py
+!androidAutomate.py
+!androidAutomateCLI.py

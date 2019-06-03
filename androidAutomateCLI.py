@@ -7,7 +7,7 @@ from androidAutomate import Device
 
 
 ## Will be redundant after detEventId() method is implemented ###
-# global eventId
+global eventId
 # eventId = 2
 
 
