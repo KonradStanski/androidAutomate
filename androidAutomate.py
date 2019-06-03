@@ -115,7 +115,7 @@ class Device():
 	def keycodeEvent(self, keycode):
 		# """
 		# Function that inputs a keycode to the device.
-		# A reference list for keycodes can be found in the /keycodes.txt file
+		# A reference list for keycodes can be found in the Github Wiki
 		# Args:
 		# 	keycode (str/int): The string or integer description of the wanted keycode
 		# """
@@ -130,6 +130,18 @@ class Device():
 		# """
 		os.system(f"adb -s {self.deviceId} shell am force-stop {app}")
 		os.system(f"adb -s {self.deviceId} shell monkey -p {app} -v {numEvents}")
+
+	def tapNode(self, nodeName):
+		# """
+		# Function that inputs a tap on the item described by its content-desc
+		# Args:
+		# 	nodeName (str): the content-desc of the node or the text
+		nodes = self.parseScreenXML()
+		nodeName = nodeName.lower()
+		for item in nodes:
+			if (nodeName in item.content_desc.lower()) or (nodeName in item.text_content.lower()):
+				self.inputTap(item.center[0], item.center[1])
+				break
 
 
 	# AUXILLIARY METHODS ############################################################################################
@@ -222,7 +234,8 @@ class Device():
 		# Process the output to determine the touch device event id
 		for line in lines:
 			if line[0:10] == "add device": # Match add device lines
-				eventId = re.findall('(\d+)$', line)[0] # regex for getting the number at th end
+				# print(line[0:10])
+				eventId = re.findall('(\d+)$', line)[0] # regex for getting the number at the end
 			if line[0:7] == "  name:":
 				if re.search("touch", line, re.IGNORECASE) or re.search("qwerty", line, re.IGNORECASE):
 					print(f"Found eventId: '{eventId}' in: '{line}'")
@@ -290,15 +303,6 @@ class Device():
 			nodes.append(node(text))
 		return nodes # return nodes if required for further processing
 
-	def tapNode(self, nodeName):
-		# """
-		# Function that inputs a tap on the item described by its content-desc
-		# Args:
-		# 	nodeName (str): the content-desc of the node or the text
-		nodes = self.parseScreenXML()
-		for item in nodes:
-			if (nodeName == item.content_desc) or (nodeName == item.text_content):
-				self.inputTap(item.center[0], item.center[1])
-				break
+
 
 

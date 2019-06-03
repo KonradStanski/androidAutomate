@@ -42,14 +42,15 @@ In order to use this tool you will need to:
 #### How to Record Events:
 - Choose "Record Event"
 - Provide a name for the event i.e: "send_snapchat"
-- perform the action on the device
+- Perform the action on the device
 - Press CTRL-C to stop recording
 - The event is now stored in ./events and can be viewed and edited. The format of storing touch events is up for review and may change
 
 #### How to Playback Events:
 - Choose "Playback Event"
-- provide the name of the event i.e: "send_snapchat"
-- make sure the device is in the same state as when you recorded the event
+- The available events will be listed with numbers
+- Provide the number of the event
+- Make sure the device is in the same state as when you recorded the event
 - The event will now play
 
 #### Searching for an app:
@@ -60,17 +61,17 @@ In order to use this tool you will need to:
 - Choose "list Clickable Nodes"
 - The info for all of the currently clickable nodes will be displayed.
 - The "content-desc" string will be used for matching nodes to click on in the tapNode() function
-- if the node you would like to click is not listed, you can look in the generated screendump.xml file to look for issues
+- If the node you would like to click is not listed, you can look in the generated screendump.xml file to look for issues
 - NOTE: parseScreenXML() matches only nodes that have the atribute clickable="true"
 
 
 ## Writing Scripts
-This module provides the option of importing the main androidAutomateAPI.py file to programmatically control your automation task.
+This module provides the option of importing the main androidAutomate.py file to programmatically control your automation task.
 This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`
 The eventId is a parameter that identifies the touchscreen hardware id. It is determined automatically by the funciton detEventId(). This function can fail under certain circumstances in which case you will need to run the command `adb shell getevent -lp` and find the eventId. This can then be used to overwrite the incorrect eventId determined in the instanciation of the device.
 ```python
 # SAMPLE AUTOMATION SCRIPT
-from androidAutomateAPI import Device
+from androidAutomate import Device
 import time
 
 # Argument is determined from `adb devices` command. In this case it is a Samsung s5
@@ -96,199 +97,12 @@ for i in range(4):      #x1   y1    x2   y2
 # Demonstrate swipe options
 myDevice.inputSwipe(500, 800, 500, 400, 1000) #This represents a swipe up but slow
 myDevice.inputSwipe(50, 80, 50, 20, percent=True) #This represents a swipe up but with the x and y inputs being a percentage
-
 ```
 
 
 ## API Reference
-#### Device Class:
-```python
-class Device():
-# """
-# This is the class that allows all the other funcitons to be called.
-# Args:
-# 	deviceID (str): The id of the device. Determined using `adb devices`
-#"""
-```
+The [API reference](https://github.com/KonradStanski/androidAutomate/wiki/1.-API-Reference) and [Source Code](https://github.com/KonradStanski/androidAutomate/wiki/3.-API-Source-Code) can be found on the GitHub Wiki!
 
-#### Input Methods:
-```python
-def inputTap(x, y, (optional) percent=True):
-# """
-# Function that inputs a tap at the (x,y) coordinates provided.
-# These can be viewed by turning on the taps and swipes option in developer options
-# Args:
-# 	x (int): x coordinate
-# 	y (int): y coordinate
-# Optional Args:
-# 	percent="True" (False by default): Sets the x,y input mode to percent of screen size
-# """
-
-def inputSwipe(x1, y1, x2, y2, (optional) time, percent=True):
-# """
-# Function that inputs a swipe starting at (x1, y1) and going to (x2, y2)
-# Args:
-# 	x1 (int): x coordinate of beginning location of swipe
-# 	y1 (int): y coordinate of beginning location of swipe
-# 	x2 (int): x coordinate of end location of swipe
-# 	y2 (int): y coordinate of end location of swipe
-# Optional Args:
-# 	time (int): the time (ms) to perform swipe. Default: 200ms
-# 	percent="True" (False by default): Sets the x, y input mode to percent of screen size
-# """
-
-def inputText(text):
-# """
-# Function that inputs text without opening a keyboard on the phone
-# Args:
-# 	text (str): Text to input
-# """
-
-def pressHome():
-# """
-# Function that pressed the center home button on your device
-# """
-
-
-def pressBack():
-# """
-# Function that pressed the back button on your device
-# """
-
-
-def pressPower():
-# """
-# Function that presses the power button on your device
-# """
-
-def wakeup(self):
-	# """
-	# Function that wake's your device if it is not already awake
-	# """
-
-
-def sleep(self):
-# """
-# Function that puts your device to sleep if it is awake
-# """
-
-
-def volumeUp():
-# """
-# Function that presses the volume up button on your device
-# """
-
-
-def volumeDown():
-# """
-# Function that presses the volume down button on your device
-# """
-
-
-def keycodeEvent(keycode):
-# """
-# Function that inputs a keycode to the device. A reference list for keycodes can be
-# found in the /keycodes.txt file
-# Args:
-# 	keycode (str/int): The string or integer description of the wanted keycode
-# """
-```
-
-#### Auxilliary Methods:
-```python
-def listEvents():
-# """
-# Function that lists the contents of the /events/ folder
-# """
-
-
-def recordEvent(event):
-# """
-# Function that records Touchscreen input until CTRL-C is typed into the terminal
-# Args:
-# 	event (str): Name of file to which the event will be saved.
-# """
-
-
-def playEvent(event):
-# """
-# Function that plays back a recorded event
-
-# Args:
-# 	event (str): Name of the recorded file to play
-# """
-
-
-def listApps():
-# """
-# Function that will list all of the installed packages on your device
-# """
-
-
-def searchApp(search):
-# """
-# Function that allows you to search your device for an app. Returns the name of the app
-# Args:
-# 	search (str): A search criteria that will grep through the output of the command
-# 	`adb shell pm list packages`
-# """
-
-
-def launchApp(app):
-# """
-# Function that launches an app
-# Args:
-# 	app (str): Launches the supplied app. Apps may be listed in the CLI with listApps()
-# """
-
-
-def closeApp(self, app):
-# """
-# Function that closes an app
-# Args:
-# 	app (str): Closes the supplied app. Apps may be listed in the CLI with listApps()
-# """
-
-
-def inputRandom(app, numEvents):
-# """
-# Function which uses the monkey runner module to open an app and input random events
-# Args:
-#	app (str): which app to launch for random input
-#	numEvents (int): number of random inputs to inject
-# """
-
-def detEventId():
-# """
-# Function that self determines the eventId of the touch screen of the device.
-# IMPORTANT NOTE: eventId is determined by the first device that has the name "touch" in it.
-# It can be set manualy with myDevice.eventId = <eventId>
-# returns:
-# 	eventId (str): the number corresponding to the touch screen eventId
-# """
-
-def screenSize():
-#"""
-# Function that self determines the screen size of the device.
-# Returns:
-# 	width (str): the width of the device in pixels
-# 	height (str): the height of the device in pixels
-#"""
-
-def parseScreenXML():
-# """
-# Function to parse the current view for clickable nodes
-# Returns:
-# 	nodes (list of node objects): a list of node objects for further processing
-# """
-
-def tapNode(nodeName):
-# """
-# Function that inputs a tap on the item described by its content-desc
-# Args:
-# 	nodeName (str): the content-desc of the node or the text
-# """
-```
 
 
 ## Debugging FAQ
@@ -326,12 +140,14 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 		USB debugging in developer options is checked
 		Try running `adb kill-server` and then `adb start-server` after connecting your device. If you did not get a popup asking you if you trust usb debugging from this computer before, this should do it.
 
+**4.**
+	Currently replaying touchscreen touches is not supported on emulators. This is on the todo list. This issue arrizes from emulators not allowing executable files to be run over adb. Suggestions on workarounds appreciated.
 
 
 ### TODO
 - add "waitOnApp()" functionality to wait for the activity to have the appname in it []
+- add touchscreen playback cababilities to x86 architecture emulator devides. This can be done by compiling the source to x86 32 bit elf executable and by adding a system architecture identification routine to the contructor of device classes.
 - add ability to click on specific id events []
-- update CLI to have "list clickable nodes of current activity" []
 - record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
 - add availability to go to sepcific tasks within an app []
 - create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
@@ -339,6 +155,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 - make all cli inputs numbered []
 
 ### DONE
+- update CLI to have "list clickable nodes of current activity" [X]
 - convert cli to class based API [X]
 - add a monkey runner function for random touch input [X]
 - automatic event<#> detection [X]
@@ -356,9 +173,14 @@ V1.1:
 	Converted to class based structure with python API
 	Converted CLI to API
 	Removed chains because they are redundant with scripts
+	Screen Dependent Input events based on nodes
+	Automatic event number detection
+	MonkeyRunner Functionality added
+	Screen width dependent input events
 
 
 ### For other Developers and Contributors:
+**Please do not hesitate to contact me or raise issues! I am always glad to help**
 This module is essentialy a wrapper around the adb shell providing all the niceties of pythonic automation.
 The replay of events is done by pushing the event record file to the sd card of the phone, then pushing the compiled executable file located in the ./src/ folder to the phone
 The event is then played back from within the phone. This is done as doing the touch playback using python to input adb commands is simply too slow and produces unusable amounts of lag.

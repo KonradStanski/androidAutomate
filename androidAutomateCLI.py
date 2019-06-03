@@ -3,12 +3,12 @@ from subprocess import Popen, PIPE
 import os
 import time
 import math
-from androidAutomateAPI import Device
+from androidAutomate import Device
 
 
 ## Will be redundant after detEventId() method is implemented ###
-global eventId
-eventId = 2
+# global eventId
+# eventId = 2
 
 
 
@@ -73,7 +73,7 @@ def deviceSelect():
 def actionSelect():
 	# These are the available menu options
 	actions = ["recordEventOp()", "playEventOp()",
-				"listAppsOp()", "searchAppOp()", "displayNodesOp()", "exitMenu()"]
+				"listAppsOp()", "searchAppOp()", "displayNodesOp()", "tapNodeOp()", "exitMenu()"]
 	clear()
 	printHead()
 	# get width of screen for dividing line
@@ -84,7 +84,8 @@ def actionSelect():
 		f"[2]: List Applications\n"
 		f"[3]: Search Application\n"
 		f"[4]: List Clickable Nodes\n"
-		f"[5]: Exit\n"
+		f"[5]: Tap Clickable Nodes\n"
+		f"[6]: Exit\n"
 		f"{line}")
 	# take input and validate it
 	actionNum = input("Action #: ")
@@ -152,6 +153,7 @@ def launchAppOp():
 	input("[PRESS ENTER]")
 	actionSelect()
 
+# Display all clickable nodes
 def displayNodesOp():
 	clear()
 	printHead()
@@ -169,6 +171,16 @@ def displayNodesOp():
 		print("="*width)
 	input("[PRESS ENTER]")
 	actionSelect()
+
+# Taps the provided node
+def tapNodeOp():
+	clear()
+	printHead()
+	node = input("Please type node text or description: ")
+	myDevice.tapNode(node)
+	input("[PRESS ENTER]")
+	actionSelect()
+
 
 # MAIN FUNCTION ####################################################################
 def main():
