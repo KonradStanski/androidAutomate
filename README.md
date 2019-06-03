@@ -18,13 +18,13 @@
 ## Getting Started
 In order to use this tool you will need to:
 
-- Install **python 3.7** (Need atleast Python 3.6 for f-strings)
+- Install **python 3.7** (Need atleast Python 3.6 for f-strings).
 
 - Install **ADB** on your machine.
-	- You can do this by running `sudo apt-get install adb` on debian systems or `sudo dnf install adb` on an rpm system. Check if this worked by running: `adb --version`
+	- You can do this by running `sudo apt-get install adb` on debian systems or `sudo dnf install adb` on an rpm system. Check if this worked by running: `adb --version`.
 - Enable **USB debugging** on your android phone.
 	- This can be acheived on most models by opening the settings menu on your phone, navigating to "about phone" or "system information". Find "Build Number" and tap on it 7-10 times. This will enable developer options. Navigate back to the setting menu, and open the developer options. From here you may enable USB debugging.
-	- Verify this worked correctly by running `adb devices`. You should see your device listed as: `<deviceId> device`
+	- Verify this worked correctly by running `adb devices`. You should see your device listed as: `<deviceId> device`.
 		- If it does not show anything then most likely have to install your device's USB drivers for linux.
 		- If it shows `<deviceId> unauthorized` make sure to connect the phone and tap ok on the popup asking you for permission to allow usb debugging.
 
@@ -35,43 +35,43 @@ In order to use this tool you will need to:
 
 ## Quick Use Guide
 - The idea is that you can use the CLI tool to explore what is possible, and then you can script things as can be seen in the example below.
-- Run androidAutomateCLI.py with `python3 androidAutomateCLI.py` in the project root directory
-- Choose your device from the list
+- Run androidAutomateCLI.py with `python3 androidAutomateCLI.py` in the project root directory.
+- Choose your device from the list.
 - From here record touch events, play touch events, explore and search installed apps, aswell as discovered the names of clickable nodes.
 
 #### How to Record Events:
-- Choose "Record Event" in the CLI menu
-- Provide a name for the event i.e: "send_snapchat"
-- Perform the action on the device
-- Press CTRL-C to stop recording
-- The event is now stored in ./events and can be viewed and edited. The format of storing touch events is up for review and may change
+- Choose "Record Event" in the CLI menu.
+- Provide a name for the event i.e: "send_snapchat".
+- Perform the action on the device.
+- Press CTRL-C to stop recording.
+- The event is now stored in ./events and can be viewed and edited. The format of storing touch events is up for review and may change.
 
 #### How to Playback Events:
-- Choose "Playback Event" in the CLI menu
-- The available events will be listed with numbers
-- Provide the number of the event
-- Make sure the device is in the same state as when you recorded the event
-- The event will now play
+- Choose "Playback Event" in the CLI menu.
+- The available events will be listed with numbers.
+- Provide the number of the event.
+- Make sure the device is in the same state as when you recorded the event.
+- The event will now play.
 
 #### Searching for an app:
-- Choose "Search Application"
-- Provide a search criteria term like you would with grep (Internaly it is just grep on the output of the list applications output)
+- Choose "Search Application".
+- Provide a search criteria term like you would with grep (Internaly it is just grep on the output of the list applications output).
 
 #### List Clickable Nodes
-- Choose "List Clickable Nodes" in the CLI menu
+- Choose "List Clickable Nodes" in the CLI menu.
 - The info for all of the currently clickable nodes will be displayed.
-- The "content-desc" string will be used for matching nodes to click on in the tapNode() function
-- If the node you would like to click is not listed, you can look in the generated screendump.xml file to look for issues
-- NOTE: parseScreenXML() matches only nodes that have the atribute clickable="true"
+- The "content-desc" string will be used for matching nodes to click on in the tapNode() function.
+- If the node you would like to click is not listed, you can look in the generated screendump.xml file to look for issues.
+- NOTE: parseScreenXML() matches only nodes that have the atribute clickable="true".
 
 #### Tap Clickable Node
-- Choose "Tap Clickable Node" in the CLI menu
-- Provide a keyword of sub-string (case-insensitive) of "Text" or "Content-desc" from the output of the "List Clickable Nodes" output. This will tap the first node matching such criteria
+- Choose "Tap Clickable Node" in the CLI menu.
+- Provide a keyword of sub-string (case-insensitive) of "Text" or "Content-desc" from the output of the "List Clickable Nodes" output. This will tap the first node matching such criteria.
 
 
 ## Writing Scripts
 This module provides the option of importing the main androidAutomate.py file to programmatically control your automation task.
-This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`
+This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`.
 The eventId is a parameter that identifies the touchscreen hardware id. It is determined automatically by the funciton detEventId(). This function can fail under certain circumstances in which case you will need to run the command `adb shell getevent -lp` and find the eventId. This can then be used to overwrite the incorrect eventId determined in the instanciation of the device.
 ```python
 # SAMPLE AUTOMATION SCRIPT
@@ -140,7 +140,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 **3.**
 	If your device shows up as **<deviceId> unauthorized** there are a couple things to check:
-		USB debugging in developer options is checked
+		USB debugging in developer options is checked.
 		Try running `adb kill-server` and then `adb start-server` after connecting your device. If you did not get a popup asking you if you trust usb debugging from this computer before, this should do it.
 
 **4.**
