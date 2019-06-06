@@ -64,7 +64,6 @@ def deviceSelect():
 			deviceSelect()
 		else:
 			deviceNum = int(deviceNum)
-			# global deviceId
 			deviceId = lines[deviceNum + 1].split("\t")[0] # get ID
 			clear()
 			return deviceId
@@ -75,9 +74,6 @@ def actionSelect():
 	"searchAppOp()", "displayNodesOp()", "tapNodeOp()", "exitMenu()"]
 	clear()
 	printHead()
-	# get width of screen for dividing line
-	# width = int(os.popen('stty size', 'r').read().split()[1])
-	# line = "="*width
 	print(f"[0]: Record Event\n"
 		f"[1]: Playback Event\n"
 		f"[2]: List Applications\n"

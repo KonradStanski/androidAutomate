@@ -291,7 +291,9 @@ class Device():
 		dump = list(filter(None, dump))
 		class node():
 			def __init__(self, text):
-				self.text_content = re.findall(r'text="(.*?)"', text)[0]
+				self.text_content = re.findall(r'text="(.*?)"', text)
+				if self.text_content: # fixes weird emty field error
+					self.text_content = self.text_content[0]
 				self.resource_id = re.findall(r'resource-id="(.*?)"', text)[0]
 				self.class_id = re.findall(r'class="(.*?)"', text)[0]
 				self.package_id = re.findall(r'package="(.*?)"', text)[0]
