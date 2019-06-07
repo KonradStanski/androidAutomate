@@ -134,6 +134,7 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 **2.**
 	If your device is **not showing up** in the `adb devices` command, look here for more info:
+
 	https://stackoverflow.com/questions/21170392/android-device-does-not-show-up-in-adb-list/21470729
 	https://forums.oneplus.com/threads/device-not-listing-using-adb-on-ubuntu-14-04-3.418957/
 	https://stackoverflow.com/questions/32151114/adb-is-not-detecting-my-android-device-on-ubuntu
@@ -148,24 +149,26 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 
 
 ### TODO
-- add "waitOnApp()" functionality to wait for the activity to have the appname in it []
-- add touchscreen playback cababilities to x86 architecture emulator devides. This can be done by compiling the source to x86 32 bit elf executable and by adding a system architecture identification routine to the contructor of device classes.
-- add ability to click on specific id events []
-- record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
-- add availability to go to sepcific tasks within an app []
-- create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
-- add robust error catching and error messages []
-- add clicking x'th matching node to the tapNode() funciton []
+- [ ] add "waitOnApp()" functionality to wait for the activity to have the appname in it []
+- [ ] add touchscreen playback cababilities to x86 architecture emulator devides. This can be done by compiling the source to x86 32 bit elf executable and by adding a system architecture identification routine to the contructor of device classes.
+- [ ] add ability to click on specific id events []
+- [ ] record and replay input from all /dev/input/event# numbers and hardware devices [] $Might be impossible?$
+- [ ] add availability to go to sepcific tasks within an app []
+- [ ] create monkeyrunner class as a full wrapper around the random aspect of the monkey runner library in python []
+- [ ] add robust error catching and error messages []
+- [ ] add clicking x'th matching node to the tapNode() funciton []
+- [ ] add possibility or recording and going to certain key activities within an app
+- [ ] add avd manager class for launchning avd's
 
 ### DONE
-- update CLI to have "list clickable nodes of current activity" [X]
-- convert cli to class based API [X]
-- add a monkey runner function for random touch input [X]
-- automatic event<#> detection [X]
-- convert openApp to open a fresh copy of the app every time [X]
-- proper object oriented class structure for API [X]
-- add screen width dependent input events [X]
-- make all cli inputs numbered [X]
+- [X] update CLI to have "list clickable nodes of current activity"
+- [X] convert cli to class based API
+- [X] add a monkey runner function for random touch input
+- [X] automatic event<#> detection
+- [X] convert openApp to open a fresh copy of the app every time
+- [X] proper object oriented class structure for API
+- [X] add screen width dependent input events
+- [X] make all cli inputs numbered
 
 
 ### CHANGELOG
