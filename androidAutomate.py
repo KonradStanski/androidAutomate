@@ -16,9 +16,10 @@ class Device():
 # """
 	def __init__(self, deviceId, suppressPrint=False):
 		self.deviceId = deviceId
+		self.suppressPrint = suppressPrint
 		self.eventId = self.detEventId()
 		self.screenWidth, self.screenHeight = self.screenSize()
-		if not suppressPrint:
+		if not self.suppressPrint:
 			print(f"DEVICEID: {self.deviceId}")
 			print(f"EVENTID: {self.eventId}")
 			print(f"SCREEN WIDTH: {self.screenWidth}")
@@ -240,7 +241,8 @@ class Device():
 				eventId = re.findall('(\d+)$', line)[0] # regex for getting the number at the end
 			if line[0:7] == "  name:":
 				if re.search("touch", line, re.IGNORECASE) or re.search("qwerty", line, re.IGNORECASE):
-					print(f"Found eventId: '{eventId}' in: '{line}'")
+					if not self.suppressPrint:
+						print(f"Found eventId: '{eventId}' in: '{line}'")
 					return eventId
 		# Nothing was found
 		return "###EventId-not-found###"
