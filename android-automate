@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # This is a terminal emulator for capturing and replaying android things
 from subprocess import Popen, PIPE
 import os
