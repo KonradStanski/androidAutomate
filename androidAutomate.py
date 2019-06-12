@@ -14,7 +14,10 @@ class Device:
 # 	deviceID (str): The id of the device. Determined using `adb devices`
 # 	suppressPrint (bool): False by default, decides if instanciation info is printed
 # """
-	def __init__(self, deviceId, suppressPrint=False):
+	def __init__(self, deviceId=False, suppressPrint=False):
+		if not deviceId:
+			print("No deviceId Specified! Here are some available devices:")
+			os.system("adb devices")
 		self.suppressPrint = suppressPrint
 		# check if deviceId valid
 		self.deviceId = self.validateDevice(deviceId)
@@ -325,7 +328,7 @@ class Device:
 		return False
 
 
-
+# EMULATOR CLASS ##############################################################################################
 class Emulator:
 # """
 # This allows for the mangment of emulator devices
@@ -344,6 +347,7 @@ class Emulator:
 		cliString = f"emulator -avd {self.emulatorId} {' '.join(self.options)}"
 		print(cliString)
 
+	def list
 
 
 
