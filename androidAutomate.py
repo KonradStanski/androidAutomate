@@ -7,9 +7,9 @@ import math
 
 
 
-class Device():
+class Device:
 # """
-# This is the class that allows all the other funcitons to be called.
+# This is the class that provides the device automation API
 # Args:
 # 	deviceID (str): The id of the device. Determined using `adb devices`
 # 	suppressPrint (bool): False by default, decides if instanciation info is printed
@@ -294,20 +294,44 @@ class Device():
 		class node():
 			def __init__(self, text):
 				self.text_content = re.findall(r'text="(.*?)"', text)
-				if self.text_content: # fixes weird emty field error
+				if self.text_content: # fixes weird empty field error
 					self.text_content = self.text_content[0]
 				self.resource_id = re.findall(r'resource-id="(.*?)"', text)[0]
 				self.class_id = re.findall(r'class="(.*?)"', text)[0]
 				self.package_id = re.findall(r'package="(.*?)"', text)[0]
 				self.content_desc = re.findall(r'content-desc="(.*?)"', text)[0]
+				# Determine the bounds
 				self.bounds = re.findall(r'bounds="(.*?)"', text)[0]
 				self.bounds = [int(x) for x in re.findall(r'[\d]+',self.bounds)]
+				# This line just does the math to determine the xy from the bounds
 				self.center = [math.floor(self.bounds[0]+((self.bounds[2]-self.bounds[0])/2)), math.floor(self.bounds[1]+((self.bounds[3]-self.bounds[1])/2))]
 		# Create List of node objects
 		nodes = []
 		for text in dump:
 			nodes.append(node(text))
 		return nodes # return nodes if required for further processing
+
+
+
+class Emulator:
+# """
+# This allows for the mangment of emulator devices
+# """
+	def __init__(self, emulatorId=False):
+		if not emulatorId:
+			print("No Emulator Specified! Here are the available emulators:")
+			os.system("emulator -list-avds")
+		else:
+			self.emulatorId = emulatorId
+			self.options = []
+			print(f"EmulatorId: {self.emulatorId}")
+
+	def startEmulator(self):
+		print(f"Options are: {self.options}")
+		cliString = f"emulator -avd {self.emulatorId} {' '.join(self.options)}"
+		print(cliString)
+
+
 
 
 

@@ -22,6 +22,7 @@ In order to use this tool you will need to:
 
 - Install **ADB** on your machine.
 	- You can do this by running `sudo apt-get install adb` on debian systems or `sudo dnf install adb` on an rpm system. Check if this worked by running: `adb --version`.
+- For using emulators, [Android Studio](https://developer.android.com/studio) must be installed. You must then create an avd from the `tools/avdmanager` drop-down. Further information on how to do this can be found [here]()
 - Enable **USB debugging** on your android phone.
 	- This can be acheived on most models by opening the settings menu on your phone, navigating to "about phone" or "system information". Find "Build Number" and tap on it 7-10 times. This will enable developer options. Navigate back to the setting menu, and open the developer options. From here you may enable USB debugging.
 	- Verify this worked correctly by running `adb devices`. You should see your device listed as: `<deviceId> device`.
@@ -30,12 +31,13 @@ In order to use this tool you will need to:
 
 - Only tested on linux systems. May not work on Windows as it uses UNIX style OS calls.
 
-- Inorder to test if your device is recognized, it is highly recommended that under developer options, the "show touches" and "show swipes" options are enabled.
+- In order to test if your device is recognized, it is highly recommended that under developer options, the "show touches" and "show swipes" options are enabled.
 
 
 ## Quick Use Guide
 - The idea is that you can use the CLI tool to explore what is possible, and then you can script things as can be seen in the example below.
-- Run androidAutomateCLI.py with `python3 androidAutomateCLI.py` in the project root directory.
+- Run android-automate with `./android-automate` in the project root directory.
+- If this does not work you may have to add permissions with `sudo cmod +x android-automate`
 - Choose your device from the list.
 - From here record touch events, play touch events, explore and search installed apps, aswell as discovered the names of clickable nodes.
 
@@ -158,7 +160,8 @@ Set device.eventId to the eventId in /dev/input/event<eventId>. In this case it 
 - [ ] add robust error catching and error messages []
 - [ ] add clicking x'th matching node to the tapNode() funciton []
 - [ ] add possibility or recording and going to certain key activities within an app
-- [ ] add avd manager class for launchning avd's
+- [ ] add Emulator manager class for launchning avd's
+- [ ] add Avd manager class for creating avd's
 
 ### DONE
 - [X] update CLI to have "list clickable nodes of current activity"
