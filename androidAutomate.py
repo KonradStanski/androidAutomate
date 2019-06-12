@@ -15,15 +15,18 @@ class Device:
 # 	suppressPrint (bool): False by default, decides if instanciation info is printed
 # """
 	def __init__(self, deviceId, suppressPrint=False):
-		self.deviceId = deviceId
 		self.suppressPrint = suppressPrint
+		# check if deviceId valid
+		self.deviceId = self.validateDevice(deviceId)
+		if self.deviceId == False: # validateDevice returns False if the deviceId provided is not in `adb devices`
+			print("Invalid deviceId")
+			quit()
 		self.eventId = self.detEventId()
 		self.screenWidth, self.screenHeight = self.screenSize()
 		if not self.suppressPrint:
-			print(f"DEVICEID: {self.deviceId}")
-			print(f"EVENTID: {self.eventId}")
-			print(f"SCREEN WIDTH: {self.screenWidth}")
-			print(f"SCREEN HEIGHT: {self.screenHeight}\n")
+			print(f"Valid deviceId: {self.deviceId}")
+			print(f"Screen Width: {self.screenWidth}")
+			print(f"Screen Height: {self.screenHeight}\n")
 
 
 	# INPUT METHODS ###################################################################################################
@@ -310,6 +313,16 @@ class Device:
 		for text in dump:
 			nodes.append(node(text))
 		return nodes # return nodes if required for further processing
+
+	def validateDevice(self, deviceId):
+		process = Popen(['adb', 'devices'], stdout=PIPE, stderr=PIPE)
+		stdout, stderr = process.communicate()
+		lines = stdout.decode().splitlines()
+		# Determine size
+		for line in lines[1:]:
+			if deviceId in line:
+				return deviceId
+		return False
 
 
 

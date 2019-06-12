@@ -36,8 +36,8 @@ In order to use this tool you will need to:
 
 ## Quick Use Guide
 - The idea is that you can use the CLI tool to explore what is possible, and then you can script things as can be seen in the example below.
-- Run android-automate with `./android-automate` in the project root directory.
-- If this does not work you may have to add permissions with `sudo cmod +x android-automate`
+- Run androidAutomateCli with `./androidAutomateCli` in the project root directory.
+- If this does not work you may have to add permissions with `sudo cmod +x androidAutomateCli`
 - Choose your device from the list.
 - From here record touch events, play touch events, explore and search installed apps, aswell as discovered the names of clickable nodes.
 
@@ -73,8 +73,6 @@ In order to use this tool you will need to:
 
 ## Writing Scripts
 This module provides the option of importing the main androidAutomate.py file to programmatically control your automation task.
-This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`.
-The eventId is a parameter that identifies the touchscreen hardware id. It is determined automatically by the funciton detEventId(). This function can fail under certain circumstances in which case you will need to run the command `adb shell getevent -lp` and find the eventId. This can then be used to overwrite the incorrect eventId determined in the instanciation of the device.
 ```python
 # SAMPLE AUTOMATION SCRIPT
 from androidAutomate import Device
@@ -104,6 +102,8 @@ for i in range(4):      #x1   y1    x2   y2
 myDevice.inputSwipe(500, 800, 500, 400, 1000) #This represents a swipe up but slow
 myDevice.inputSwipe(50, 80, 50, 20, percent=True) #This represents a swipe up but with the x and y inputs being a percentage
 ```
+This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`.
+The eventId is a parameter that identifies the touchscreen hardware id. It is determined automatically by the funciton detEventId(). This function can fail under certain circumstances in which case you will need to run the command `adb shell getevent -lp` and find the eventId. This can then be used to overwrite the incorrect eventId determined in the instanciation of the device.
 
 
 ## API Reference
