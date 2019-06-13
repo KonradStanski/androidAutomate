@@ -108,6 +108,7 @@ The eventId is a parameter that identifies the touchscreen hardware id. It is de
 
 ## API Reference
 ### The [API reference](https://github.com/KonradStanski/androidAutomate/wiki/1.-API-Reference) and [Source Code](https://github.com/KonradStanski/androidAutomate/wiki/3.-API-Source-Code) can be found on the GitHub Wiki!
+### The Emulator Options can be found and referenced [HERE](https://developer.android.com/studio/run/emulator-commandline)
 
 
 ## Debugging FAQ

@@ -6,7 +6,9 @@ import re
 import math
 
 
-
+########################################################################################################################
+###############################################Device Class#############################################################
+########################################################################################################################
 class Device:
 # """
 # This is the class that provides the device automation API
@@ -18,6 +20,7 @@ class Device:
 		if not deviceId:
 			print("No deviceId Specified! Here are some available devices:")
 			os.system("adb devices")
+			quit()
 		self.suppressPrint = suppressPrint
 		# check if deviceId valid
 		self.deviceId = self.validateDevice(deviceId)
@@ -328,27 +331,35 @@ class Device:
 		return False
 
 
-# EMULATOR CLASS ##############################################################################################
+########################################################################################################################
+###############################################Emulator Class###########################################################
+########################################################################################################################
 class Emulator:
 # """
 # This allows for the mangment of emulator devices
+# Args:
+# 	emulatorId (str): the name of the emulator to launch
 # """
-	def __init__(self, emulatorId=False):
+	def __init__(self, emulatorId=False, suppressPrint=False):
 		if not emulatorId:
-			print("No Emulator Specified! Here are the available emulators:")
-			os.system("emulator -list-avds")
+			if not suppressPrint:
+				print("No Emulator Specified! Here are the available emulators:")
+				os.system("emulator -list-avds")
 		else:
 			self.emulatorId = emulatorId
 			self.options = []
-			print(f"EmulatorId: {self.emulatorId}")
+			if not suppressPrint:
+				print(f"EmulatorId: {self.emulatorId}")
 
-	def startEmulator(self):
+
+# BASIC EMULATOR MANAGMENT ####################################################################################
+	def startEmulator(self, options=False):
+		if options:
+			self.options.append(options.split(" "))
 		print(f"Options are: {self.options}")
 		cliString = f"emulator -avd {self.emulatorId} {' '.join(self.options)}"
-		print(cliString)
-
-	def list
-
+		print(f"Running: {cliString}")
+		os.system(cliString)
 
 
 

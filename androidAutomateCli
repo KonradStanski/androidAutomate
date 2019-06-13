@@ -45,30 +45,67 @@ def printLine(character):
 def deviceSelect():
 	clear()
 	printHead()
-	print("Please Choose A Device:")
+	print("Please Choose A Option:")
+	print("[0]: Launch an Emulator")
 	process = Popen(['adb', 'devices'], stdout=PIPE, stderr=PIPE)
 	stdout, stderr = process.communicate()
 	lines = stdout.decode().splitlines()
-	if len(lines) == 1:
+	if len(lines) == 2:
 		print("No devices found!")
+		printLine("=")
 	else:
 		for i in range(1, len(lines)-1): # print devices
-			print(f"[{i-1}]: {lines[i]}")
+			print(f"[{i}]: {lines[i]}")
 		printLine("=")
-		deviceNum = input("Device #: ") # get user input for selection
-		if deviceNum == "":
-			deviceSelect()
-		elif not deviceNum.isdigit():
+	deviceNum = input("Action #: ") # get user input for selection
+	if deviceNum == "":
+		deviceSelect()
+	elif not deviceNum.isdigit():
+		input("[PLEASE INPUT VALID ENTRY]")
+		deviceSelect()
+	elif int(deviceNum) >= len(lines)-1:
+		input("[PLEASE INPUT VALID ENTRY]")
+		deviceSelect()
+	elif int(deviceNum) == 0:
+		launchEmulator()
+	else:
+		deviceNum = int(deviceNum)
+		global deviceId
+		deviceId = lines[deviceNum].split("\t")[0] # get ID
+		clear()
+		print(deviceId)
+
+def launchEmulator():
+	clear()
+	printHead()
+	print("Please Choose an emulator to launch: ")
+	process = Popen(['emulator', '-list-avds'], stdout=PIPE, stderr=PIPE)
+	stdout, stderr = process.communicate()
+	lines = stdout.decode().splitlines()
+	if len(lines) == 0:
+		print("No emulators created! Please refer to documentation at https://developer.android.com/studio/run/managing-avds")
+		input("[PRESS ANY KEY]")
+		deviceSelect()
+	else:
+		for i in range(len(lines)):
+			print(f"[{i}] {lines[i]}")
+		printLine("=")
+		emulatorNum = input("Action #: ")
+		if emulatorNum == "":
 			input("[PLEASE INPUT VALID ENTRY]")
-			deviceSelect()
-		elif int(deviceNum) >= len(lines)-1:
+		elif not emulatorNum.isdigit():
 			input("[PLEASE INPUT VALID ENTRY]")
-			deviceSelect()
+		elif int(emulatorNum) >= len(lines):
+			input("[PLEASE INPUT VALID ENTRY]")
 		else:
-			deviceNum = int(deviceNum)
-			deviceId = lines[deviceNum + 1].split("\t")[0] # get ID
+			emulatorNum = int(emulatorNum)
+			emulator = lines[emulatorNum]
+			os.system(f"emulator -avd {emulator} > /dev/null &")
 			clear()
-			return deviceId
+			input("[PRESS ANY KEY ONCE EMULATOR HAS BOOTED]")
+			print("Please wait...")
+			time.sleep(3)
+		deviceSelect()
 
 def actionSelect():
 	# These are the available menu options
@@ -182,7 +219,7 @@ def tapNodeOp():
 # MAIN FUNCTION ####################################################################
 def main():
 	clear()
-	deviceId = deviceSelect() # get the user to select a device
+	deviceSelect() # get the user to select a device
 	global myDevice
 	myDevice = Device(deviceId, suppressPrint=True) # instanciate device
 	actionSelect() # go to main menu
