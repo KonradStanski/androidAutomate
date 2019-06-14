@@ -5,6 +5,7 @@ import time
 import re
 import math
 
+
 def retSysCall(command):
 	# Simple function that returns the output from a system call
 	process = Popen(command, stdout=PIPE, stderr=PIPE)
@@ -246,6 +247,7 @@ class Device:
 		# 	eventId (str): the number corresponding to the touch screen eventId
 		# """
 		# Get output of adb shell getevent -lp command for parsing
+		lines = retSysCall(['adb','-s', self.deviceId,'shell', 'getevent', '-lp'])
 		# Process the output to determine the touch device event id
 		for line in lines:
 			if line[0:10] == "add device": # Match add device lines
@@ -347,7 +349,7 @@ class Emulator:
 # 	emulatorId (str): the name of the emulator to launch
 # """
 	def __init__(self, emulatorId=False, suppressPrint=False):
-		self.supressPrint = suppressPrint
+		self.suppressPrint = suppressPrint
 		if not emulatorId:
 			if not suppressPrint:
 				print("No Emulator Specified! Here are the available emulators:")
@@ -362,13 +364,12 @@ class Emulator:
 # BASIC EMULATOR MANAGMENT ####################################################################################
 	def startEmulator(self, options=False):
 		if options:
+			print(f"Options are: {self.options}")
 			self.options.append(options.split(" "))
-		print(f"Options are: {self.options}")
 		cliString = f"emulator -avd {self.emulatorId} {' '.join(self.options)}"
-		if self.suppressPrint:
+		if suppressPrint:
 			cliString.append(" > /dev/null")
 		print(f"Running: {cliString}")
-		time.sleep(3)
 		os.system(cliString)
 
 
