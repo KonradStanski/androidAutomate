@@ -5,6 +5,12 @@ import time
 import re
 import math
 
+def retSysCall(command):
+	# Simple function that returns the output from a system call
+	process = Popen(command, stdout=PIPE, stderr=PIPE)
+	stdout, stderr = process.communicate()
+	lines = stdout.decode().splitlines()
+	return lines
 
 ########################################################################################################################
 ###############################################Device Class#############################################################
@@ -240,9 +246,6 @@ class Device:
 		# 	eventId (str): the number corresponding to the touch screen eventId
 		# """
 		# Get output of adb shell getevent -lp command for parsing
-		process = Popen(['adb','-s', self.deviceId,'shell', 'getevent', '-lp'], stdout=PIPE, stderr=PIPE)
-		stdout, stderr = process.communicate()
-		lines = stdout.decode().splitlines()
 		# Process the output to determine the touch device event id
 		for line in lines:
 			if line[0:10] == "add device": # Match add device lines
@@ -264,9 +267,7 @@ class Device:
 		# 	height (int): the height of the device in pixels
 		#"""
 		# Get output for parsing
-		process = Popen(['adb','-s', self.deviceId,'shell', 'wm', 'size'], stdout=PIPE, stderr=PIPE)
-		stdout, stderr = process.communicate()
-		lines = stdout.decode().splitlines()
+		lines = retSysCall(['adb','-s', self.deviceId,'shell', 'wm', 'size'])
 		# Determine size
 		for line in lines:
 			width, height = (line.split(" ")[2]).split("x")
@@ -321,9 +322,14 @@ class Device:
 		return nodes # return nodes if required for further processing
 
 	def validateDevice(self, deviceId):
-		process = Popen(['adb', 'devices'], stdout=PIPE, stderr=PIPE)
-		stdout, stderr = process.communicate()
-		lines = stdout.decode().splitlines()
+		# """
+		# Function that validates a deviceId
+		# Args:
+		# 	deviceId (int): the deviceId to validate
+		# Returns:
+		# 	deviceId or False: depending on the outcome of validation
+		# """
+		lines = retSysCall(['adb', 'devices'])
 		# Determine size
 		for line in lines[1:]:
 			if deviceId in line:
@@ -341,6 +347,7 @@ class Emulator:
 # 	emulatorId (str): the name of the emulator to launch
 # """
 	def __init__(self, emulatorId=False, suppressPrint=False):
+		self.supressPrint = suppressPrint
 		if not emulatorId:
 			if not suppressPrint:
 				print("No Emulator Specified! Here are the available emulators:")
@@ -358,7 +365,10 @@ class Emulator:
 			self.options.append(options.split(" "))
 		print(f"Options are: {self.options}")
 		cliString = f"emulator -avd {self.emulatorId} {' '.join(self.options)}"
+		if self.suppressPrint:
+			cliString.append(" > /dev/null")
 		print(f"Running: {cliString}")
+		time.sleep(3)
 		os.system(cliString)
 
 

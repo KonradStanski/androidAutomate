@@ -40,6 +40,11 @@ def printLine(character):
 	line = character*width
 	print(line)
 
+def retSysCall(command):
+	process = Popen(command, stdout=PIPE, stderr=PIPE)
+	stdout, stderr = process.communicate()
+	lines = stdout.decode().splitlines()
+	return lines
 
 # MENU CONTROL ################################################################
 def deviceSelect():
@@ -47,9 +52,10 @@ def deviceSelect():
 	printHead()
 	print("Please Choose A Option:")
 	print("[0]: Launch an Emulator")
-	process = Popen(['adb', 'devices'], stdout=PIPE, stderr=PIPE)
-	stdout, stderr = process.communicate()
-	lines = stdout.decode().splitlines()
+	# process = Popen(['adb', 'devices'], stdout=PIPE, stderr=PIPE)
+	# stdout, stderr = process.communicate()
+	# lines = stdout.decode().splitlines()
+	lines = retSysCall(['adb', 'devices'])
 	if len(lines) == 2:
 		print("No devices found!")
 		printLine("=")
@@ -58,12 +64,7 @@ def deviceSelect():
 			print(f"[{i}]: {lines[i]}")
 		printLine("=")
 	deviceNum = input("Action #: ") # get user input for selection
-	if deviceNum == "":
-		deviceSelect()
-	elif not deviceNum.isdigit():
-		input("[PLEASE INPUT VALID ENTRY]")
-		deviceSelect()
-	elif int(deviceNum) >= len(lines)-1:
+	if deviceNum == "" or not deviceNum.isdigit() or int(deviceNum) >= len(lines)-1:
 		input("[PLEASE INPUT VALID ENTRY]")
 		deviceSelect()
 	elif int(deviceNum) == 0:
@@ -72,16 +73,16 @@ def deviceSelect():
 		deviceNum = int(deviceNum)
 		global deviceId
 		deviceId = lines[deviceNum].split("\t")[0] # get ID
-		clear()
-		print(deviceId)
 
 def launchEmulator():
+	# Menu for launching emulators
 	clear()
 	printHead()
 	print("Please Choose an emulator to launch: ")
-	process = Popen(['emulator', '-list-avds'], stdout=PIPE, stderr=PIPE)
-	stdout, stderr = process.communicate()
-	lines = stdout.decode().splitlines()
+	# process = Popen(['emulator', '-list-avds'], stdout=PIPE, stderr=PIPE)
+	# stdout, stderr = process.communicate()
+	# lines = stdout.decode().splitlines()
+	lines = retSysCall(['emulator', '-list-avds'])
 	if len(lines) == 0:
 		print("No emulators created! Please refer to documentation at https://developer.android.com/studio/run/managing-avds")
 		input("[PRESS ANY KEY]")
@@ -91,12 +92,9 @@ def launchEmulator():
 			print(f"[{i}] {lines[i]}")
 		printLine("=")
 		emulatorNum = input("Action #: ")
-		if emulatorNum == "":
+		if emulatorNum == "" or not emulatorNum.isdigit() or int(emulatorNum) >= len(lines):
 			input("[PLEASE INPUT VALID ENTRY]")
-		elif not emulatorNum.isdigit():
-			input("[PLEASE INPUT VALID ENTRY]")
-		elif int(emulatorNum) >= len(lines):
-			input("[PLEASE INPUT VALID ENTRY]")
+			launchEmulator()
 		else:
 			emulatorNum = int(emulatorNum)
 			emulator = lines[emulatorNum]
@@ -104,7 +102,7 @@ def launchEmulator():
 			clear()
 			input("[PRESS ANY KEY ONCE EMULATOR HAS BOOTED]")
 			print("Please wait...")
-			time.sleep(3)
+			time.sleep(1)
 		deviceSelect()
 
 def actionSelect():
