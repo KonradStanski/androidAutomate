@@ -50,7 +50,7 @@ def retSysCall(command):
 def deviceSelect():
 	clear()
 	printHead()
-	print("Please Choose A Option:")
+	print("Please Choose A Option (type q to navigate back): ")
 	print("[0]: Launch an Emulator")
 	# process = Popen(['adb', 'devices'], stdout=PIPE, stderr=PIPE)
 	# stdout, stderr = process.communicate()
@@ -64,7 +64,11 @@ def deviceSelect():
 			print(f"[{i}]: {lines[i]}")
 		printLine("=")
 	deviceNum = input("Action #: ") # get user input for selection
-	if deviceNum == "" or not deviceNum.isdigit() or int(deviceNum) >= len(lines)-1:
+	if deviceNum == "q" or deviceNum == "quit":
+		exitMenu()
+	elif deviceNum == "":
+		deviceSelect()
+	elif not deviceNum.isdigit() or int(deviceNum) >= len(lines)-1:
 		input("[PLEASE INPUT VALID ENTRY]")
 		deviceSelect()
 	elif int(deviceNum) == 0:
@@ -73,12 +77,13 @@ def deviceSelect():
 		deviceNum = int(deviceNum)
 		global deviceId
 		deviceId = lines[deviceNum].split("\t")[0] # get ID
+		clear()
 
 def launchEmulator():
 	# Menu for launching emulators
 	clear()
 	printHead()
-	print("Please Choose an emulator to launch: ")
+	print("Please Choose an emulator to launch (type q to navigate back): ")
 	# process = Popen(['emulator', '-list-avds'], stdout=PIPE, stderr=PIPE)
 	# stdout, stderr = process.communicate()
 	# lines = stdout.decode().splitlines()
@@ -92,7 +97,11 @@ def launchEmulator():
 			print(f"[{i}] {lines[i]}")
 		printLine("=")
 		emulatorNum = input("Action #: ")
-		if emulatorNum == "" or not emulatorNum.isdigit() or int(emulatorNum) >= len(lines):
+		if emulatorNum == "q" or emulatorNum == "quit":
+			deviceSelect()
+		elif emulatorNum == "":
+			launchEmulator()
+		elif not emulatorNum.isdigit() or int(emulatorNum) >= len(lines):
 			input("[PLEASE INPUT VALID ENTRY]")
 			launchEmulator()
 		else:
@@ -103,7 +112,7 @@ def launchEmulator():
 			input("[PRESS ANY KEY ONCE EMULATOR HAS BOOTED]")
 			print("Please wait...")
 			time.sleep(1)
-		deviceSelect()
+			deviceSelect()
 
 def actionSelect():
 	# These are the available menu options
@@ -111,6 +120,7 @@ def actionSelect():
 	"searchAppOp()", "displayNodesOp()", "tapNodeOp()", "exitMenu()"]
 	clear()
 	printHead()
+	print("Please choose an action to perform (type q to go back): ")
 	print(f"[0]: Record Event\n"
 		f"[1]: Playback Event\n"
 		f"[2]: List Applications\n"
@@ -123,6 +133,8 @@ def actionSelect():
 	actionNum = input("Action #: ")
 	if actionNum == "":
 		actionSelect()
+	elif actionNum == "q" or actionNum == "quit":
+		deviceSelect()
 	elif not actionNum.isdigit():
 		input("[PLEASE INPUT VALID ENTRY]")
 		actionSelect()
@@ -219,7 +231,7 @@ def main():
 	clear()
 	deviceSelect() # get the user to select a device
 	global myDevice
-	myDevice = Device(deviceId, suppressPrint=True) # instanciate device
+	myDevice = Device(deviceId, verbose=False) # instanciate device
 	actionSelect() # go to main menu
 
 

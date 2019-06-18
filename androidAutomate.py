@@ -21,14 +21,14 @@ class Device:
 # This is the class that provides the device automation API
 # Args:
 # 	deviceID (str): The id of the device. Determined using `adb devices`
-# 	suppressPrint (bool): False by default, decides if instanciation info is printed
+# 	verbose (bool): true by default, decides if instanciation info is printed
 # """
-	def __init__(self, deviceId=False, suppressPrint=False):
+	def __init__(self, deviceId=False, verbose=True):
 		if not deviceId:
 			print("No deviceId Specified! Here are some available devices:")
 			os.system("adb devices")
 			quit()
-		self.suppressPrint = suppressPrint
+		self.verbose = verbose
 		# check if deviceId valid
 		self.deviceId = self.validateDevice(deviceId)
 		if self.deviceId == False: # validateDevice returns False if the deviceId provided is not in `adb devices`
@@ -36,7 +36,7 @@ class Device:
 			quit()
 		self.eventId = self.detEventId()
 		self.screenWidth, self.screenHeight = self.screenSize()
-		if not self.suppressPrint:
+		if self.verbose:
 			print(f"Valid deviceId: {self.deviceId}")
 			print(f"Screen Width: {self.screenWidth}")
 			print(f"Screen Height: {self.screenHeight}\n")
@@ -255,7 +255,7 @@ class Device:
 				eventId = re.findall('(\d+)$', line)[0] # regex for getting the number at the end
 			if line[0:7] == "  name:":
 				if re.search("touch", line, re.IGNORECASE) or re.search("qwerty", line, re.IGNORECASE):
-					if not self.suppressPrint:
+					if self.verbose:
 						print(f"Found eventId: '{eventId}' in: '{line}'")
 					return eventId
 		# Nothing was found
@@ -348,30 +348,28 @@ class Emulator:
 # Args:
 # 	emulatorId (str): the name of the emulator to launch
 # """
-	def __init__(self, emulatorId=False, suppressPrint=False):
-		self.suppressPrint = suppressPrint
+	def __init__(self, emulatorId=False, verbose=True):
+		self.verbose = verbose
+		self.options = False
 		if not emulatorId:
-			if not suppressPrint:
+			if self.verbose:
 				print("No Emulator Specified! Here are the available emulators:")
 				os.system("emulator -list-avds")
 		else:
 			self.emulatorId = emulatorId
 			self.options = []
-			if not suppressPrint:
+			if self.vebose:
 				print(f"EmulatorId: {self.emulatorId}")
 
-
-# BASIC EMULATOR MANAGMENT ####################################################################################
-	def startEmulator(self, options=False):
-		if options:
+	# BASIC EMULATOR MANAGMENT ####################################################################################
+	def startEmulator(self):
+		cliString = f"emulator -avd {self.emulatorId}"
+		if self.options:
 			print(f"Options are: {self.options}")
-			self.options.append(options.split(" "))
-		cliString = f"emulator -avd {self.emulatorId} {' '.join(self.options)}"
-		if suppressPrint:
-			cliString.append(" > /dev/null")
-		print(f"Running: {cliString}")
+			cliString += " " + ' '.join(self.options)
+		if self.verbose:
+			cliString += " > /dev/null"
+		cliString += " &" # to detach the terminal so that python execution can continue
+		if not self.verbose:
+			print("\n" + cliString + "\n")
 		os.system(cliString)
-
-
-
-

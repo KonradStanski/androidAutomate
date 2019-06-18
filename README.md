@@ -41,6 +41,10 @@ In order to use this tool you will need to:
 - Choose your device from the list.
 - From here record touch events, play touch events, explore and search installed apps, aswell as discovered the names of clickable nodes.
 
+### Emulator Managment
+- The CLI gives you the option of launching android emulators. These are only accessible if you have android studio installed and if you have already created some emulators using android studio's AVD manager.
+- For more information on using the in-built emulator managment, please refer to the [wiki](https://github.com/KonradStanski/androidAutomate/wiki/4.-Emulator-Options) and to [this](https://developer.android.com/studio/run/emulator-commandline) for all possible emulator options.
+
 #### How to Record Events:
 - Choose "Record Event" in the CLI menu.
 - Provide a name for the event i.e: "send_snapchat".
@@ -99,8 +103,8 @@ for i in range(4):      #x1   y1    x2   y2
     time.sleep(0.2)
 
 # Demonstrate swipe options
-myDevice.inputSwipe(500, 800, 500, 400, 1000) #This represents a swipe up but slow
-myDevice.inputSwipe(50, 80, 50, 20, percent=True) #This represents a swipe up but with the x and y inputs being a percentage
+myDevice.inputSwipe(500, 800, 500, 400, 1000) # This represents a swipe up but slow
+myDevice.inputSwipe(50, 80, 50, 20, percent=True) # This represents a swipe up but with the x and y inputs being a percentage
 ```
 This is an example script where the deviceId is passed during the instanciation of the device. The deviceId can be determined from the command `adb devices`.
 The eventId is a parameter that identifies the touchscreen hardware id. It is determined automatically by the funciton detEventId(). This function can fail under certain circumstances in which case you will need to run the command `adb shell getevent -lp` and find the eventId. This can then be used to overwrite the incorrect eventId determined in the instanciation of the device.
@@ -108,7 +112,8 @@ The eventId is a parameter that identifies the touchscreen hardware id. It is de
 
 ## API Reference
 ### The [API reference](https://github.com/KonradStanski/androidAutomate/wiki/1.-API-Reference) and [Source Code](https://github.com/KonradStanski/androidAutomate/wiki/3.-API-Source-Code) can be found on the GitHub Wiki!
-### The Emulator Options can be found and referenced [HERE](https://developer.android.com/studio/run/emulator-commandline)
+### The Emulator Options can be found and referenced [HERE](https://developer.android.com/studio/run/emulator-commandline).
+### For info and examples on how to incorporate emulator managment into your script, click [Here](https://github.com/KonradStanski/androidAutomate/wiki/4.-Emulator-Managment).
 
 
 ## Debugging FAQ
