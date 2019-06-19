@@ -8,7 +8,7 @@ import math
 
 def retSysCall(command):
 	# Simple function that returns the output from a system call
-	process = Popen(command, stdout=PIPE, stderr=PIPE)
+	process = Popen(command.split(), stdout=PIPE, stderr=PIPE)
 	stdout, stderr = process.communicate()
 	lines = stdout.decode().splitlines()
 	return lines
@@ -247,7 +247,7 @@ class Device:
 		# 	eventId (str): the number corresponding to the touch screen eventId
 		# """
 		# Get output of adb shell getevent -lp command for parsing
-		lines = retSysCall(['adb','-s', self.deviceId,'shell', 'getevent', '-lp'])
+		lines = retSysCall(f"adb -s {self.deviceId} shell getevent -lp")
 		# Process the output to determine the touch device event id
 		for line in lines:
 			if line[0:10] == "add device": # Match add device lines
@@ -269,7 +269,7 @@ class Device:
 		# 	height (int): the height of the device in pixels
 		#"""
 		# Get output for parsing
-		lines = retSysCall(['adb','-s', self.deviceId,'shell', 'wm', 'size'])
+		lines = retSysCall(f"adb -s {self.deviceId} shell wm size")
 		# Determine size
 		for line in lines:
 			width, height = (line.split(" ")[2]).split("x")
@@ -331,7 +331,7 @@ class Device:
 		# Returns:
 		# 	deviceId or False: depending on the outcome of validation
 		# """
-		lines = retSysCall(['adb', 'devices'])
+		lines = retSysCall(f"adb devices")
 		# Determine size
 		for line in lines[1:]:
 			if deviceId in line:
@@ -358,11 +358,12 @@ class Emulator:
 		else:
 			self.emulatorId = emulatorId
 			self.options = []
-			if self.vebose:
+			if self.verbose:
 				print(f"EmulatorId: {self.emulatorId}")
 
 	# BASIC EMULATOR MANAGMENT ####################################################################################
 	def startEmulator(self):
+		initDev = retSysCall("adb devices") # used for determining the deviceId
 		cliString = f"emulator -avd {self.emulatorId}"
 		if self.options:
 			print(f"Options are: {self.options}")
@@ -373,3 +374,11 @@ class Emulator:
 		if not self.verbose:
 			print("\n" + cliString + "\n")
 		os.system(cliString)
+		# Determine the device if the emulator from comparing before and after lists of devices attached to system
+		time.sleep(2)
+		afterDev = retSysCall("adb devices")
+		self.deviceId = (set(afterDev)-set(initDev)).pop().split()[0]
+		print(self.deviceId)
+
+	def stopEmulator(self):
+		os.system(f"adb -s {self.deviceId} emu kill")
