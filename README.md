@@ -43,7 +43,7 @@ In order to use this tool you will need to:
 
 ### Emulator Managment
 - The CLI gives you the option of launching android emulators. These are only accessible if you have android studio installed and if you have already created some emulators using android studio's AVD manager.
-- For more information on using the in-built emulator managment, please refer to the [wiki](https://github.com/KonradStanski/androidAutomate/wiki/4.-Emulator-Options) and to [this](https://developer.android.com/studio/run/emulator-commandline) for all possible emulator options.
+- For more information on using the in-built emulator managment, please refer to the [wiki](https://github.com/KonradStanski/androidAutomate/wiki/4.-Emulator-Managment) and to [this](https://developer.android.com/studio/run/emulator-commandline) for all possible emulator options.
 
 #### How to Record Events:
 - Choose "Record Event" in the CLI menu.

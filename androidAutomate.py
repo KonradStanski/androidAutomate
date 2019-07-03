@@ -374,11 +374,12 @@ class Emulator:
 		if not self.verbose:
 			print("\n" + cliString + "\n")
 		os.system(cliString)
-		# Determine the device if the emulator from comparing before and after lists of devices attached to system
+		# Determine the device of the emulator from comparing before and after lists of devices attached to system
 		time.sleep(2)
 		afterDev = retSysCall("adb devices")
 		self.deviceId = (set(afterDev)-set(initDev)).pop().split()[0]
 		print(self.deviceId)
+
 
 	def stopEmulator(self):
 		os.system(f"adb -s {self.deviceId} emu kill")
