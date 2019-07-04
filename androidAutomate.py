@@ -87,6 +87,7 @@ class Device:
 		# Args:
 		# 	text (str): Text to input
 		# """
+		text = text.replace(" ", "%s")
 		os.system(f"adb -s {self.deviceId} shell input text '{text}'")
 
 	def pressHome(self):
