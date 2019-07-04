@@ -230,13 +230,18 @@ class Device:
 		# Args:
 		# 	search (str): A search criteria that will grep through the output of the command `adb shell pm list packages`
 		# """
-		os.system(f"adb -s {self.deviceId} shell pm list packages | grep {search} -i")
+		lines = retSysCall(f"adb -s {self.deviceId} shell pm list packages")
+		for line in lines:
+			if search.lower() in line.lower():
+				print(line[8:])
 
 	def listApps(self):
 		# """
 		# Function that will list all of the installed packages on your device
 		# """
-		os.system(f"adb -s {self.deviceId} shell pm list packages")
+		lines = retSysCall(f"adb -s {self.deviceId} shell pm list packages")
+		for line in lines:
+			print(line[8:])
 
 	def detEventId(self):
 		# """
