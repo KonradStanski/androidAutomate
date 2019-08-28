@@ -22,7 +22,7 @@ In order to use this tool you will need to:
 
 - Install **ADB** on your machine.
 	- You can do this by running `sudo apt-get install adb` on debian systems or `sudo dnf install adb` on an rpm system. Check if this worked by running: `adb --version`.
-- For using emulators, [Android Studio](https://developer.android.com/studio) must be installed. You must then create an avd from the `tools/avdmanager` drop-down. Further information on how to do this can be found [here]()
+- For using emulators, [Android Studio](https://developer.android.com/studio) must be installed. You must then create an avd from the `tools/avdmanager` drop-down. Further information on how to do this can be found [here](https://developer.android.com/studio/run/managing-avds)
 - Enable **USB debugging** on your android phone.
 	- This can be acheived on most models by opening the settings menu on your phone, navigating to "about phone" or "system information". Find "Build Number" and tap on it 7-10 times. This will enable developer options. Navigate back to the setting menu, and open the developer options. From here you may enable USB debugging.
 	- Verify this worked correctly by running `adb devices`. You should see your device listed as: `<deviceId> device`.
